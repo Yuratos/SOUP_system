@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap'); 
+
+
+
+html, body { 
+    background-color: #F7F7F7;
+    font-family: 'Nunito Sans';
+}
+
+li:hover { 
+    background-color: grey;
+}
+
+li:active { 
+    position: relative;
+    top: 1px;
+}
+
+.first-step-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-container { 
+    font-family: 'Nunito Sans';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hello-doctor-content { 
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+    text-align: center;
+
+}
+
+.main-text-hello { 
+    text-align: center;
+    font-weight: 700;
+    font-size: calc(1vw + 10px);
+}
+
+.two-btn { 
+    width: 100%;
+    padding: 0 13%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+}
+
+.btn { 
+    color: white;
+    background-color: black;
+    text-align: center;
+    min-width: calc(2vw + 100px);
+    padding: 2%;
+    border-radius: 40px;
+    font-size: calc(0.4vw + 10px);
+}
+
+.btn:hover { 
+    background-color: grey;
+}
+
+.btn:active {
+    position: relative;
+    top: 1px;
+}
+
+
+.img-icon { 
+    max-width: 100px;
+    max-height: 100px;
+}
+
+
+.choose-yrsl {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+    text-align: center;
+}
+
+
+.second-step-container { 
+    text-align: center;
+    max-width: 1060px;
+    padding: 50px 30px;
+    margin: 0 auto;
+}
+
+.content-two { 
+    display: flex; 
+    align-items: center;
+    flex-direction: column;
+    gap: 20px; 
+}
+
+.header-bar { 
+    align-items: center;
+    text-align: center;
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    gap: 10px; 
+    font-weight: 500;
+}
+
+.header-bar h2 { 
+    font-size: calc(1vw + 10px);
+}
+
+.header-bar p {
+    font-size: calc(0.7vw + 10px);
+} 
+
+
+.search-yrslf { 
+    padding: 6% 3% 3% 3%;
+    width: 100%;
+    background-color: white;
+    min-height: 300px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.icon-img { 
+    max-width: 50px;
+    max-height: 30px; 
+}
+
+.search-input { 
+    font-size: calc(0.4vw + 10px);
+    display: flex;
+    justify-content: center;
+    gap: 3%;
+    align-items: center;
+}
+
+.doctor-list { 
+    display: flex;
+    flex-direction: column;
+    font-family: 'Nunito Sans';
+    color: white;
+    padding: 3%;
+    gap: 20px; 
+    margin-top: 20px;
+}
+
+.doctor-item { 
+    font-size: calc(0.5vw + 10px);
+    border-radius: 20px;
+    padding: 3%;
+    background-color: black;
+}
+
+
+.btn-back-step { 
+    position: absolute; 
+    top: 5%;
+    left: 5%;
+}
+
+.sorry-block { 
+    color: grey;
+    font-size: calc(0.8vw + 10px);
+    margin-top: 20px;
+}
+
+.doctor-item h3 { 
+    font-size: calc(0.6vw + 10px);
+}
+
+.none-active { 
+    display: none;
+}

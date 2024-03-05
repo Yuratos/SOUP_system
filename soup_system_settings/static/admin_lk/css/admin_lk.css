@@ -1,0 +1,341 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap'); 
+
+.header { 
+    background-color: white;
+}
+
+body { 
+    font-family: 'Nunito Sans';
+}
+
+.container { 
+    max-width: 1260px;
+    padding: 0 30px;
+    margin: 0 auto;
+}
+
+.nav { 
+    display: flex;
+    align-items: center;
+    padding: 2%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+
+.add-personal-form-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(128, 128, 128, 0.5); 
+    position: fixed;
+    height: 100vh;
+    overflow: hidden;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.add-pers-title {
+    font-size: calc(1vw + 10px);
+    margin-bottom: 5%;
+    text-decoration: underline;
+}
+
+.form-personal-div { 
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: center;
+    min-width: 50%;
+    min-height: 50%;
+    border-radius: 15px;
+    opacity: 1;
+    padding: 5%;
+    padding-top: 45px;
+    background-color: white;
+}
+
+.border-form {
+    flex: 1.5;
+}
+
+.close-form { 
+    position: absolute;
+    top: 10px; 
+    right: 10px;
+    padding: 2%;
+}
+
+.remove-personal-form-block { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(128, 128, 128, 0.5); 
+    position: fixed;
+    height: 100vh;
+    overflow: hidden;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.two-btn-accept {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+.remove-personal-div { 
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: center;
+    min-width: 30%;
+    min-height: 10%;
+    border-radius: 15px;
+    opacity: 1;
+    padding: 5%;
+    padding-top: 45px;
+    background-color: white;
+}
+
+.remove-personal-btn {
+    font-size: calc(1vw + 10px);
+}
+
+
+.agree { 
+    color: rgb(26, 197, 77);  
+}
+
+.disagree { 
+    color: brown; 
+}
+
+.form-add-form { 
+    font-size: calc(0.7vw + 10px);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: start;
+    gap: 20px;
+    flex: 1
+}
+
+.input-text { 
+    background-color: rgba(229, 228, 226, 0.5);
+    padding: 1% 2%;
+    border-radius: 5px;
+}
+
+.content-header {
+    background-color: #F7F7F7;
+    padding: 8px; 
+    color: black; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px;
+}
+
+.info { 
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+}
+
+
+.accept-new-personal-btn { 
+    color: white; 
+    padding: 2%;
+    display: inline-block;
+    background-color: #A8E4A0;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+}
+
+.content-header.search input {
+    min-width: 400px;
+    margin-left: 7px;
+}
+
+.lk-info p { 
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.admin-img { 
+    display: block;
+    border-radius: 50%;
+}
+
+.icon-img { 
+    max-width: 50px;
+    max-height: 30px;
+}
+
+.main-admin-page { 
+    background-color: #F7F7F7;
+    padding: 22px 0;
+    min-height: 100vh;
+}
+
+
+.main-admin-content { 
+    display: flex;
+    gap: 20px; 
+}
+
+
+.side-bar { 
+    background-color: white;
+    padding: 2%;
+    border-radius: 30px;
+    min-height: 500px;
+    flex: 1;
+    max-height: 600px;
+}
+
+.side-bar-navigation { 
+    display: flex; 
+    flex-direction: column;
+    gap: 20px;
+}
+
+.side-bar-item {
+    display: flex;
+    gap: 10px;
+}
+
+.side-bar-item a {
+    color: black;
+}
+
+.admin-settings { 
+    border-radius: 20px;
+    flex: 4;
+    background-color: white; 
+    padding: 2%;
+}
+
+.add-personal { 
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-left: auto;
+}
+
+.title-personal { 
+    font-weight: 800;
+    margin-top: 10px;
+}
+
+
+.person-list { 
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.person-card { 
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 15px;
+    background-color: #F7F7F7;
+    padding: 2%;
+}
+
+.burger-menu-open { 
+    padding: 2%;
+    border-radius: 20px;
+    background-color: white;
+    margin-bottom: 3%;
+}
+
+.burger-menu-list { 
+    justify-content: space-around;
+    display: flex;
+
+}
+
+.burger-menu { 
+    display: none;
+}
+
+
+.none-active { 
+    display: none;
+}
+
+.add-btn-click { 
+    display: flex;
+    align-items: center;
+}
+
+.add-btn-click:hover {
+    cursor: pointer; /* Изменение курсора на иконку тыкающего пальца при наведении */
+}
+
+
+@media screen and (min-width: 450px) and (max-width: 1024px) { 
+    .burger-menu { 
+        display: block;
+    }
+
+    .info, .content-header.search, .side-bar {
+        display: none;
+    }
+    .add-personal { 
+        justify-content: center;
+    }
+
+    .accept-new-personal { 
+        margin-top: 10%;
+    }
+    
+    .personal-title { 
+        text-align: center;
+    }
+
+    .admin-settings { 
+        padding-bottom: 5%;
+    }
+
+
+    .close-form { 
+        max-width: 40px;
+        max-height: 20px;
+        top: 5px; 
+        right: 5px;
+    } 
+
+    .add-pers-title {
+        margin-bottom: 4%;
+    }
+
+    .form-add-form { 
+        gap: 14px;
+    } 
+
+    .form-personal-div {
+        min-width: 70%;
+    }
+
+    .border-form {
+        flex: 0.9;
+    }
+
+    .remove-personal-div { 
+        min-height: 30%;
+    }
+}

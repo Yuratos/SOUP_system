@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content ="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static '_reset.css' %}">
+    <link rel="stylesheet" href="{% static 'place/css/place_controller.css' %}">
+    <title>Управление кабинетом {{ place_controller_number }}</title>
+</head>
+<body>
+
+    <div class="stop-agree none-active" id = "stop-agree">
+        <div class="agree-table">
+            <h4 class = 'agree-stop-title'>Вы уверены, что хотите закончить сеанс?</h4>
+            <p class = 'warning-stop-title'>Пожалуйста, убедитесь, что Вы закончили прием последнего<br>пациента в приложении</p>
+            <div class="buttons-agree-table">
+                <button style="color: rgb(26, 197, 77)" id='agree-close-btn'>Да</button>
+                <button style="color: brown" id='not-agree-close-btn'>Нет</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content">
+          <button class="close" id = 'close_btn'>
+            <img src="{% static 'place/img/red-cross.svg' %}" alt="" class = 'img-close'>
+          </button>
+          <h2 class="title-fio"><span id='departament-name'>{{ doctor_departament }}</span><br><span id='fio'>{{doctor_fio}}</span></h2>
+          <div class="border"></div>
+          <p class="check-p">Пожалуйста, отметьте при необходимости следующих<br>врачей для пациента</p>
+          <div class="pop3"></div>
+          <h1 class = 'main-number' id = 'main-number'></h1>
+          <h1 id = 'noone' class = 'noone-title none-active'>В очереди пока никого нет</h1>
+          <form class = 'none-active' id = 'form'>
+            <div>
+              <div class="form-check form-switch ">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Хирургия">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Хирургия</label>
+              </div>
+              <div class="form-check form-switch ">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Лор">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Лор</label>
+              </div>
+              <div class="form-check form-switch ">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Травматология">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Травматология</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Сдача мочи</label>
+              </div>
+            </div>
+            <div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Гастроэнтерология">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Гастроэнтерология</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Травматология">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Травматология</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Травматология">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Травматология</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckChecked">МРТ</label>
+              </div>
+            </div>
+            <div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Гастроэнтерология</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" >
+                <label class="form-check-label" for="flexSwitchCheckChecked">Гастроэнтерология</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Гастроэнтерология</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Сдача крови</label>
+              </div>
+            </div>
+          
+          </form>
+            <button class = 'send-btn none-active' id = 'finish-patient-btn'>Закончить прием пациента</button>
+            <div class="cabinet">
+            <h3 class="title-cabinet">Вы вeдете прием в кабинете # <span id = 'place-name'>{{ place_controller_number }}</span></h3>
+            </div>
+        </div>
+        </div> 
+        <div class = 'layer  none-active' ></div>
+    </div>
+    <script src="{% static 'place/js/place_controller.js' %}"></script>
+</body>
+</html>

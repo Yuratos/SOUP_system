@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кабинет {{place_number}}</title>
+    <link rel="stylesheet" href="{% static 'place/css/place_screen.css' %}">
+    <link rel="stylesheet" href="{% static '_reset.css' %}">
+</head>
+<body>
+    {{ place_number | json_script:"place_number" }}
+    <header class = 'header'>
+        <div class="container">
+            <nav class="nav">
+                <p href="!#" class="logo">Система упрвавления потоком пациентов</p>
+                <p href="!#" class="logo">8-906-976-52-11</p>
+            </nav>
+        </div>
+    </header>
+    <section class="main-section">
+            <div class="tablo">
+                <h3 class = 'place-name'>--- Кабинет # {{place_number}} ---</h3>
+                <h4 class = '' id = 'doctor_name'></h4>
+                <div class="border"></div>
+                <div class="patient-number">
+                    <h2 class = "" id = 'main_number'></h2>
+                    <h2 class = '' id = 'not-active'>Прием не идет</h2>
+                </div>
+            </div>
+    </section>
+    <script src ="{% static 'place/js/place_screen.js' %}"></script>
+</body>
+</html>
