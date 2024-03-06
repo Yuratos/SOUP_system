@@ -4,6 +4,8 @@ let main_doctor = null
 
 let main_place = null
 
+const additional_places = ['МРТ', 'Сдача крови', 'Сдача мочи', 'СКТ']
+
 
 
 /* основные элементы'*/
@@ -82,7 +84,10 @@ async function get_doctors(event) {
     
     sorry_text_second.classList.add('none-active')
 
- 
+    console.log(doctors.doctors)
+
+    doctors.doctors.push(...additional_places)
+
     for (doctor of doctors.doctors) { 
         let btn = document.createElement('button')
         let li_item = document.createElement('li')
@@ -94,6 +99,8 @@ async function get_doctors(event) {
         btn.appendChild(li_item)
         ul_doctors.appendChild(btn)
     }
+
+
 }
 
 
@@ -146,15 +153,24 @@ async function get_places(event) {
 
 function starBtnEvent(event) { 
     firstContainerStep.classList.add('none-active')
-    get_doctors()
+    get_doctors().catch(err => {console.log(err)})
     secondContainerStep.classList.remove('none-active')
     }
 
 function choose_doctors(event) { 
     main_doctor = event.target.textContent
     main_doctor_name_list = main_doctor.split(' ')
-    hello_text_step_third.textContent = `Добрый день, ${main_doctor_name_list[0]} ${main_doctor_name_list[1]}`
-    get_places(event=null)
+
+    if (main_doctor_name_list.length <= 3) { 
+
+        hello_text_step_third.textContent = `Добрый день. Выбрано: ${main_doctor_name_list.join(' ')}`
+
+    } else {
+
+        hello_text_step_third.textContent = `Добрый день, ${main_doctor_name_list[0]} ${main_doctor_name_list[1]}` 
+    }
+
+    get_places(event=null).catch(err => {console.log(err)})
     secondContainerStep.classList.add('none-active')
     thirdContainerStep.classList.remove('none-active')
 }
@@ -194,7 +210,7 @@ function first_srep() {
 
 /* Начало загрузки страницы */
 first_srep()
-get_doctors(event = null)
+get_doctors(event = null).catch(err => {console.log(err)})
 
 
 

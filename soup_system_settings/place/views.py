@@ -1,15 +1,12 @@
 import re
-from django.http import Http404, HttpRequest
+from django.http import Http404
 from django.http.response import HttpResponse as HttpResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.shortcuts import  render
 from django.views import View
-from rest_framework.views import APIView
 from django.utils.decorators import method_decorator
-from rest_framework.parsers import JSONParser
 from django.views.decorators.cache import never_cache
 from patient_queue.mongo_db import main_places, main_queue
-from rest_framework.response import Response
+from .places_info import additional_places
 
 # Create your views here.
 
@@ -20,12 +17,18 @@ class PlaceController(View):
     def get(self, request, place_name, doctor_info):
         pattern = r"^\w+\s\w+\s\w+\s-\s\w+$"
         
-        if not re.match(pattern, doctor_info):
+        if not re.match(pattern, doctor_info) and doctor_info not in additional_places:
             raise Http404()
         
-        fio = doctor_info.split('-')[0].strip()
+        doctor_info = doctor_info.split('-')
         
-        departament = doctor_info.split('-')[1].strip()
+        if len(doctor_info) == 1: 
+            fio = 'Идут сопутствующие процедуры'
+            departament = doctor_info[0].strip()
+        
+        else:   
+            fio = doctor_info[0].strip()
+            departament = doctor_info[1].strip()
 
         need_queue = main_queue.find_one({'name': departament})
         
@@ -35,8 +38,7 @@ class PlaceController(View):
             check = need_queue.get('check')
             patient = check_doctor_mistake[place_name]
             patient['doctors'].insert(0, departament)
-            print(patient)
-            
+
             main_queue.update_one(
                 {"name": departament},
                 {"$unset": {f"patients_in_cabinets.{place_name}": ""}}

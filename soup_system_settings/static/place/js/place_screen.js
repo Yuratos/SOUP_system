@@ -31,20 +31,30 @@ placeSocket.onmessage = function(event) {
 
     if (data.close) { 
         main_number.textContent = '' 
-        not_active_title.hidden = false
+        not_active_title.classList.remove('none-active') 
         doctor_name.textContent = ''
         return
     }
-    
-    if (data.fio) {
+
+    console.log(data.fio)
+
+    if (data.fio == "Идут сопутствующие процедуры") { 
+        doctor_name.textContent = `${data.departament}`
+        not_active_title.classList.add('none-active') 
+    }
+
+
+    if (data.fio && data.fio !== "Идут сопутствующие процедуры") {
         let place_doctor_fio = data.fio
         doctor_name.textContent = `Принимающий врач: ${place_doctor_fio}`
-        not_active_title.hidden = true
+        not_active_title.classList.add('none-active') 
     }
 
     let place_main_number = data.next_number
     console.log(place_main_number)
     main_number.textContent = place_main_number 
+
+    
 
 };
 

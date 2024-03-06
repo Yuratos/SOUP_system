@@ -176,5 +176,6 @@ class PlaceConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'fio': fio,
             'next_number': next_number,
+            'departament': departament
         }))
 

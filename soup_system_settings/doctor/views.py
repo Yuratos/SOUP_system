@@ -4,8 +4,10 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from place.places_info import FREE_PLACES
+from rest_framework.parsers import JSONParser
 from patient_queue.mongo_db import main_places
-from .models import Doctor
+from .models import Doctor, Departaments
+from .serializers import DoctorSerializer
 # Create your views here.
 
 class HelloDoctorPage(View): 
@@ -35,3 +37,35 @@ class GetDoctorsAPI(APIView):
         return Response({"doctors" : doctors_list})
 
 
+class RemoveAddDoctorAPI(APIView): 
+    
+    parser_classes = [JSONParser]
+    
+    def patch(self, request): 
+        data = request.data
+        serializer = DoctorSerializer(data=data)
+        if serializer.is_valid(): 
+            fio = data.get('fio').split(' ')
+            surname = fio[0].strip()
+            name = fio[1].strip()
+            last_name = fio[2].strip()
+            departament = data.get('departament').strip()
+            if data.get('method') == 'delete': 
+                try:
+                    departament_obj = Departaments.objects.get(name = departament)
+                    doctor = Doctor.objects.get(surname = surname, name = name, last_name = last_name, departament = departament_obj)
+                    doctor.delete()
+                    return Response({'status': '200'})
+                except Exception: 
+                    return Response({'status': '400', 'errors': serializer.errors})
+            else:
+                try:
+                    departament_obj = Departaments.objects.get(name = departament)
+                    doctor = Doctor.objects.create(surname = surname, name = name, last_name = last_name, departament = departament_obj)
+                    doctor.save()
+                    return Response({'status': '200'})
+                except Exception:
+                    return Response({'status': '400', 'errors': serializer.errors})
+                
+        else: 
+            return Response({'status': '400', 'errors': serializer.errors})

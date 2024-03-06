@@ -81,6 +81,7 @@ function patient_form_submit() {
     }
   }
 
+  console.log(checked_departament)
   checked_departament = JSON.stringify(checked_departament)
   ControllerSocket.send(`{"end_patient": ${checked_departament}, "departament": "${departament}", "place": "${placeName}"}`)
 
