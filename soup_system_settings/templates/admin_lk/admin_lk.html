@@ -24,28 +24,6 @@
         </div>
     </div>
 
-    <div class="add-personal-form-block none-active" id = "add-personal-form-block">
-        <div class="form-personal-div">
-            <button class="close-form add" id = "close-form add">
-                <img src="{% static 'admin_lk/img/logout.svg' %}" alt="" class="close-form icon-img">
-            </button>
-            <h2 class="add-pers-title">Добавление нового работника</h2>
-            <form action="" class = 'form-add-form' method="post">
-                <label for="surnamename">Фамилия</label>
-                <input type="text" id='surname' class = 'input-text'>
-                <label for="name">Имя</label>
-                <input type="text" id='name' class = 'input-text'>
-                <label for="last_name">Отчество</label>
-                <input type="text" id='last_name' class = 'input-text'>
-                <label for="depertamnet">Направление</label>
-                <select id = 'depertamnet_choice' class="input-text">
-                    <option value="">Привет</option>
-                </select>
-                <button class="accept-new-personal-btn" type="submit">Добавить</button>
-            </form>
-            <div class="border-form"></div>
-        </div>
-    </div>
     <heder class="header">
         <div class="container">
             <nav class="nav">
@@ -120,6 +98,25 @@
                             <button class = 'remove-btn-id'><img src="" alt="" class = 'icon-img'></button>
                         </li>             
                     </ul>
+                    <div class="form-personal-div none-active" id = 'form-personal-div'>
+                        <button class="close-form add" id = "close-form add">
+                            <img src="{% static 'admin_lk/img/logout.svg' %}" alt="" class="close-form icon-img">
+                        </button>
+                        <h2 class="add-pers-title">Добавление нового работника</h2>
+                        <form  class = 'form-add-form' id = 'doctor-form'>
+                            <label for="surnamename">Фамилия</label>
+                            <input type="text" id='surname' class = 'input-text'>
+                            <label for="name">Имя</label>
+                            <input type="text" id='name' class = 'input-text'>
+                            <label for="last_name">Отчество</label>
+                            <input type="text" id='last_name' class = 'input-text'>
+                            <label for="depertamnet">Направление</label>
+                            <select id = 'depertamnet_choice' class="input-text">
+                            </select>
+                        </form>
+                        <button class="accept-new-personal-btn" type="" id = 'accept-new-personal-btn'>Добавить</button>
+                        <div class="border-form"></div>
+                    </div>
                 </div>
             </div>
         </div>

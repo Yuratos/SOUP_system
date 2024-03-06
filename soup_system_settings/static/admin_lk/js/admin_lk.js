@@ -2,6 +2,8 @@
 
 let to_delete = null 
 
+const departaments_options = ['Хирургия', 'Травматология', 'Терапевтия']
+
 /* Основные элементы */ 
 
 const close_remove_btn  = document.getElementById('close-remove')
@@ -22,9 +24,16 @@ let search = document.getElementById('search')
 
 let add_btn_click = document.getElementById('add-btn-click')
 
-let add_form_block = document.getElementById('add-personal-form-block')
+let add_form_block = document.getElementById('form-personal-div')
 
 let close_add_form = document.getElementById('close-form add')
+
+let select_form_choices = document.getElementById('depertamnet_choice')
+
+let accept_new_personal_btn = document.getElementById('accept-new-personal-btn')
+
+let doctor_form = document.getElementById('doctor-form')
+
 
 
 /* Функции-декораторы */
@@ -125,10 +134,56 @@ function remove_doctor(event) {
 
 function add_form(event) { 
   add_form_block.classList.remove('none-active')
+  ul_doctors.classList.add('none-active')
+  add_departament_to_select()
 }
 
 function close_add_form_click(event) { 
   add_form_block.classList.add('none-active')
+  ul_doctors.classList.remove('none-active')
+}
+
+function add_departament_to_select() { 
+  for (option of departaments_options) {
+    let opt = document.createElement('option') 
+    opt.value = option
+    opt.textContent = option
+    select_form_choices.appendChild(opt) 
+} 
+}
+
+function add_doctor(event) { 
+  let i = 1 
+  let fio = []
+  let departament = ""
+  const elements = doctor_form.elements;
+  for (element of elements) { 
+    element = element.value 
+    if (!element) { 
+      return
+    }
+    if (i != 4) { 
+      fio.push(element)
+    }
+    if (i === 4) {
+      departament = element 
+    }
+    
+    i ++ 
+  }
+
+  fio = fio.join(" ")
+
+  add_remove_doctor_api('add', fio, departament)
+
+  add_form_block.classList.add('none-active')
+
+  ul_doctors.classList.remove('none-active')
+
+  setTimeout(() => get_doctors(event = null), 1000)
+
+  doctor_form.reset()
+  
 }
 
 
@@ -146,6 +201,6 @@ add_btn_click.onclick = add_form
 
 close_add_form.onclick = close_add_form_click
 
-
+accept_new_personal_btn.onclick = add_doctor
 
 get_doctors(event = null)
