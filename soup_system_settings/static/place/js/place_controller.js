@@ -77,13 +77,18 @@ function patient_form_submit() {
     const element = elements[i];
     if (element.checked) { 
       checked_departament.push(element.value)
-      element.removeAttribute('checked')
     }
+  }
+
+  if (checked_departament.length === 0) { 
+    checked_departament = 'nothing'
   }
 
   console.log(checked_departament)
   checked_departament = JSON.stringify(checked_departament)
   ControllerSocket.send(`{"end_patient": ${checked_departament}, "departament": "${departament}", "place": "${placeName}"}`)
+
+  form.reset()
 
 }
 

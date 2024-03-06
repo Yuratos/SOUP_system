@@ -66,7 +66,9 @@ class PlaceConsumer(AsyncWebsocketConsumer):
         patient_departaments = text_data_json.get('end_patient')
         
         if patient_departaments:
-            patient_departaments = text_data_json.get('end_patient')
+            if patient_departaments == 'nothing': 
+                return 
+                
             with lock(departament, timeout=2):
                 need_queue = main_queue.find_one({'name': departament})
                 cabinets_patients = need_queue.get('patients_in_cabinets')
