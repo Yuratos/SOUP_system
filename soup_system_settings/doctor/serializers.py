@@ -24,3 +24,8 @@ class DoctorSerializer(serializers.Serializer):
             except Exception:
                 raise serializers.ValidationError({"fio":"Такого доктора нет в списке"})
         return attrs
+
+
+class PlaceSerializer(serializers.Serializer):
+    method = serializers.ChoiceField(['add', 'delete'])
+    place = serializers.CharField()

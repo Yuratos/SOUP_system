@@ -2,7 +2,9 @@
 
 let to_delete = null 
 
-const departaments_options = ['Хирургия', 'Травматология', 'Терапевтия']
+const departaments_options =  ['Педиатрия', 'Челюстно-лицевая хирургия',  'Хирургия', 'Травматология', 'Офтальмология', 'Нейрохирургия', 'ЛОР']
+
+const additional = ['КТ', 'Рентген', 'Ортопантамограф', 'УЗИ', 'Лаборатория']
 
 /* Основные элементы */ 
 
@@ -34,7 +36,11 @@ let accept_new_personal_btn = document.getElementById('accept-new-personal-btn')
 
 let doctor_form = document.getElementById('doctor-form')
 
+let doctor_settings_click = document.getElementById('doctor-settings')
 
+let place_settings_click = document.getElementById('place-settings')
+
+let main_screen_title = document.getElementById('main-screen-title')
 
 /* Функции-декораторы */
 
@@ -54,24 +60,47 @@ function debounce(foo) {
 /* Функции запросов */
 
 function add_remove_doctor_api(method, fio, departament) { 
-    let url = window.location.protocol + '//' + window.location.host + '/doctor/api/v1/add-remove-doctor'
-    let json = JSON.stringify({ 
-      method: method, 
-      fio: fio, 
-      departament: departament
-    })
-    console.log(json)
-    const requestData = {
-        method: 'PATCH', 
-        headers: {
-            'Content-Type': 'application/json' 
-          },
-            body: json
-          };   
 
-    fetch(url, requestData).catch(err => {console.log(err)})
+  let url = window.location.protocol + '//' + window.location.host + '/doctor/api/v1/add-remove-doctor'
+  let json = JSON.stringify({ 
+    method: method, 
+    fio: fio, 
+    departament: departament
+  })
+  console.log(json)
+  const requestData = {
+      method: 'PATCH', 
+      headers: {
+          'Content-Type': 'application/json' 
+        },
+           body: json
+        };   
+
+  fetch(url, requestData).catch(err => {console.log(err)})
 
 }
+
+function add_remove_place_api(method, place) { 
+
+  let url = window.location.protocol + '//' + window.location.host + '/doctor/api/v1/add-remove-place'
+  let json = JSON.stringify({ 
+    method: method, 
+    place: place, 
+  })
+
+  console.log(json)
+  const requestData = {
+      method: 'PATCH', 
+      headers: {
+          'Content-Type': 'application/json' 
+        },
+           body: json
+        };   
+
+  fetch(url, requestData).catch(err => {console.log(err)})
+
+}
+
 
 
 async function get_doctors(event) {
@@ -94,6 +123,49 @@ async function get_doctors(event) {
   ul_doctors.innerHTML = ""
   
   for (doctor of doctors.doctors) { 
+
+    if (additional.includes(doctor))  {
+      continue
+    }
+
+    let li_item = document.createElement('li')
+    let li_h3_item = document.createElement('h3')
+    let remove_btn = document.createElement('button')
+    let img_cross = document.createElement('img') 
+    img_cross.classList.add('icon-img')
+    img_cross.src="/static/admin_lk/img/red-cross.svg"
+    remove_btn.classList.add('remove-btn-id')
+    remove_btn.appendChild(img_cross)
+    remove_btn.onclick = go_remove
+    li_h3_item.textContent = doctor
+    li_item.appendChild(li_h3_item) 
+    li_item.appendChild(remove_btn) 
+    li_item.classList.add('person-card')
+    ul_doctors.appendChild(li_item)
+  }
+
+}
+
+
+async function get_places(event) {
+  let places = null 
+  const currentUrl = window.location.protocol + '//' + window.location.host;
+  const url = currentUrl + '/doctor/api/v1/all-places'
+  if (!event || !event.target.value) {
+      let response = await fetch(url)
+      places = await response.json() 
+  } 
+
+  else { 
+      let params = {'search': event.target.value} 
+      let queryParams = new URLSearchParams(params)
+      const requestUrl = `${url}?${queryParams}`
+      let response = await fetch(requestUrl)
+      places = await response.json() } 
+
+  ul_places.innerHTML = ""
+  
+  for (place of places.places) { 
       let li_item = document.createElement('li')
       let li_h3_item = document.createElement('h3')
       let remove_btn = document.createElement('button')
@@ -103,13 +175,12 @@ async function get_doctors(event) {
       remove_btn.classList.add('remove-btn-id')
       remove_btn.appendChild(img_cross)
       remove_btn.onclick = go_remove
-      li_h3_item.textContent = doctor
+      li_h3_item.textContent = place
       li_item.appendChild(li_h3_item) 
       li_item.appendChild(remove_btn) 
       li_item.classList.add('person-card')
       ul_doctors.appendChild(li_item)
   }
-
 }
 
 
@@ -132,10 +203,15 @@ function remove_doctor(event) {
   setTimeout(() => get_doctors(event = null), 1000)
 }
 
+function remove_place(event) { 
+  add_remove_doctor_api('delete', to_delete[0])
+  remove_div.classList.add('none-active')
+  setTimeout(() => get_doctors(event = null), 1000)
+}
+
 function add_form(event) { 
   add_form_block.classList.remove('none-active')
   ul_doctors.classList.add('none-active')
-  add_departament_to_select()
 }
 
 function close_add_form_click(event) { 
@@ -183,7 +259,25 @@ function add_doctor(event) {
   setTimeout(() => get_doctors(event = null), 1000)
 
   doctor_form.reset()
-  
+
+}
+
+function give_doctor_screen(event) { 
+  main_screen_title.textContent = "Состав мед.работников, входящих в СУПП" 
+  add_btn_click.firstElementChild.textContent = 'Добавить работника'
+  remove_btn_agree.onclick = remove_doctor
+  search.placeholder = 'Поиск по сотрудникам'
+  search.oninput = debounce(get_doctors)
+  get_doctors()
+}
+
+function give_doctor_screen(event) { 
+  main_screen_title.textContent = "Кабинеты, зарегестрированные в системе СУПП" 
+  remove_btn_agree.onclick = remove_place
+  add_btn_click.firstElementChild.textContent = 'Добавить кабинет'
+  search.placeholder = 'Поиск по кабинетам'
+  search.oninput = debounce(get_places)
+  get_places()
 }
 
 
@@ -195,8 +289,6 @@ remove_btn_disagree.onclick = close_remove
 
 remove_btn_agree.onclick = remove_doctor
 
-search.oninput = debounce(get_doctors)
-
 add_btn_click.onclick = add_form 
 
 close_add_form.onclick = close_add_form_click
@@ -204,3 +296,5 @@ close_add_form.onclick = close_add_form_click
 accept_new_personal_btn.onclick = add_doctor
 
 get_doctors(event = null)
+
+add_departament_to_select()

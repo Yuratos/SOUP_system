@@ -8,5 +8,6 @@ urlpatterns = [
     path('doctor-page/', views.HelloDoctorPage.as_view(), name = 'doctor-page'),
     path('api/v1/doctor-list/', views.GetDoctorsAPI.as_view()), 
     path('api/v1/free-places/', views.GetFreePlacesAPI.as_view()), 
+    path('api/v1/all-places/', views.GetAllPlacesAPI.as_view()), 
     path('api/v1/add-remove-doctor', views.RemoveAddDoctorAPI.as_view()) 
 ]

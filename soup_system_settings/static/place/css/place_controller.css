@@ -58,6 +58,11 @@ form {
     width: 40px;
 }
 
+.img-break { 
+    height: 50px;
+    width: 50px;
+}
+
 label { 
     font-size: calc(1vw +  3px);
 }
@@ -73,6 +78,14 @@ form {
     position: absolute;
     top: 2%;
     right: 2%;
+}
+
+.break { 
+    border: none;
+    background-color: white;
+    position: absolute;
+    top: 2%;
+    left: 2%;
 }
 
 .title-fio { 
@@ -230,6 +243,11 @@ form {
     .img-close { 
         height: 20px;
         width: 20px;
+    }
+
+    .img-break { 
+        height: 30px;
+        width: 30px;
     }
 
     .buttons-agree-table {

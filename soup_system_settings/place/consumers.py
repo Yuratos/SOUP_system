@@ -64,8 +64,8 @@ class PlaceConsumer(AsyncWebsocketConsumer):
         place = text_data_json['place']
         fio = text_data_json.get('fio')
         patient_departaments = text_data_json.get('end_patient')
-        
         if patient_departaments:
+            
             if patient_departaments == 'nothing': 
                 return 
                 
@@ -73,7 +73,6 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                 need_queue = main_queue.find_one({'name': departament})
                 cabinets_patients = need_queue.get('patients_in_cabinets')
                 patient = cabinets_patients[place] 
-                
                 new_doctors = Patient.extend_doctors(patient.get('doctors'), patient_departaments)  
                 patient['doctors'] = new_doctors
                 main_queue.update_one(

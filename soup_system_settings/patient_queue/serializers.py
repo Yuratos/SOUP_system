@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .models import Patient
-from patient_queue.departaments_objects import ALL_DEPARTAMENTS_NAME
+from patient_queue.departaments_objects import ALL_DEPARTAMENTS_NAME, ADDITIONAL_DEPARTAMENTS_NAME
 
 class PatientSerializer(serializers.ModelSerializer):
     
-    departaments = serializers.ListField(child = serializers.ChoiceField(ALL_DEPARTAMENTS_NAME), allow_empty=False)
+    departaments = serializers.ListField(child = serializers.ChoiceField(ALL_DEPARTAMENTS_NAME + ADDITIONAL_DEPARTAMENTS_NAME), allow_empty=False) 
      
     class Meta: 
         model = Patient

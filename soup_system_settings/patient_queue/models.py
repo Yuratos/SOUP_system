@@ -7,6 +7,8 @@ class Patient(models.Model):
     
     surname = models.CharField(max_length = 60, verbose_name = 'Фамилия')
     
+    is_gold = models.BooleanField()
+    
     def __str__(self) -> str:
         return f'{self.personal_id} {self.surname}'
     

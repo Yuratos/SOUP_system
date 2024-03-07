@@ -70,11 +70,11 @@
             <div class="main-admin-content">
                 <div class="side-bar">
                     <ul class="side-bar-navigation">
-                        <li class="side-bar-item">
+                        <li class="side-bar-item" id = 'doctor-settings'>
                             <img src="{% static 'admin_lk/img/side-bar-logo.svg' %}" alt="" class="side-bar-logo">
                             <a href="#!">Врачебный состав</a>
                         </li>
-                        <li class="side-bar-item">
+                        <li class="side-bar-item" id = 'place-settings'>
                             <img src="{% static 'admin_lk/img/door.png' %}" alt="" class="side-bar-logo">
                             <a href="#!">Кабинеты</a>
                         </li>
@@ -88,15 +88,11 @@
                         </div>
                     </div>
                     <div class = 'title-personal'>
-                        <h2 class="personal-title">
+                        <h2 class="personal-title" id = 'main-screen-title'>
                             Состав мед.работников, входящих в СУПП 
                         </h2>
                     </div>
-                    <ul class="person-list" id = 'person-list'>
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button class = 'remove-btn-id'><img src="" alt="" class = 'icon-img'></button>
-                        </li>             
+                    <ul class="person-list" id = 'person-list'>    
                     </ul>
                     <div class="form-personal-div none-active" id = 'form-personal-div'>
                         <button class="close-form add" id = "close-form add">

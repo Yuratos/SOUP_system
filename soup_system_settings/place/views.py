@@ -6,7 +6,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from patient_queue.mongo_db import main_places, main_queue
-from .places_info import additional_places
+from patient_queue.departaments_objects import ADDITIONAL_DEPARTAMENTS_NAME
 
 # Create your views here.
 
@@ -15,20 +15,26 @@ from .places_info import additional_places
 class PlaceController(View):
 
     def get(self, request, place_name, doctor_info):
-        pattern = r"^\w+\s\w+\s\w+\s-\s\w+$"
+        pattern = r"^[\w-]+\s[\w-]+\s[\w-]+\s-\s[\w-]+(\s\w+)?$"
         
-        if not re.match(pattern, doctor_info) and doctor_info not in additional_places:
+        if not re.match(pattern, doctor_info) and doctor_info not in ADDITIONAL_DEPARTAMENTS_NAME:
             raise Http404()
         
         doctor_info = doctor_info.split('-')
         
-        if len(doctor_info) == 1: 
-            fio = 'Идут сопутствующие процедуры'
+        if len(doctor_info) > 2: 
+            fio =  doctor_info[0].strip()
+            departament = 'Челюстно-лицевая хирургия'
+        
+        elif len(doctor_info) == 1: 
+            fio = 'Идут сопутствующие процедуры' 
             departament = doctor_info[0].strip()
         
         else:   
             fio = doctor_info[0].strip()
             departament = doctor_info[1].strip()
+            
+        print(departament)
 
         need_queue = main_queue.find_one({'name': departament})
         
@@ -44,7 +50,7 @@ class PlaceController(View):
                 {"$unset": {f"patients_in_cabinets.{place_name}": ""}}
                 )
                 
-
+                
             if not check: 
                 main_queue.update_one(
                     {"name": departament},  
@@ -61,7 +67,7 @@ class PlaceController(View):
         context = {'place_controller_number': place_name,
                    'doctor_fio': fio, 'doctor_departament': departament}
         
-        
+
         return render(request, 'place/place_controller.html', context=context)
 
 
@@ -69,4 +75,3 @@ class PlaceScreen(View):
     def get(self, request, place_number):
         context = {'place_number': place_number}
         return render(request, 'place/place_screen.html', context=context)
-

@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from patient_queue.mongo_db import mongo_client
-from patient_queue.departaments_objects import ALL_DEPARTAMENTS_NAME
+from patient_queue.departaments_objects import ALL_DEPARTAMENTS_NAME, ADDITIONAL_DEPARTAMENTS_NAME
 
 
 class Command(BaseCommand):
@@ -14,7 +14,7 @@ class Command(BaseCommand):
             collection_queue = db['queues']
             collection_places = db['places']
             collection_places.insert_many([free_places, places_departamnets])
-            for name in ALL_DEPARTAMENTS_NAME:
+            for name in ALL_DEPARTAMENTS_NAME + ADDITIONAL_DEPARTAMENTS_NAME:
                 pattern = {'name': name, 'check': 0, 'newbies_queue': [],
                         'participant_queue': [], 'patients_in_cabinets': {}}
                 collection_queue.insert_one(pattern)
