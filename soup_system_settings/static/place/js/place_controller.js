@@ -44,6 +44,8 @@ let break_btn = document.getElementById('break-btn')
 
 let return_btn = document.getElementById('return-btn')
 
+let prompt_next_doctor = document.getElementById('prompt')
+
 /* Заполнение шаблона */
 
 place_name_title.textContent = place_names[placeName]
@@ -66,10 +68,6 @@ function agree_with_close(event) {
 
 function take_break(event) { 
 
-  if (noone_title.classList.contains('none-active')) {
-  patient_form_submit() 
-  }
-
   clearInterval(check_empty)
   check_empty = null 
   noone_title.classList.add('none-active')
@@ -80,6 +78,7 @@ function take_break(event) {
   break_btn.classList.add('none-active')
   return_btn.classList.remove('none-active')
   two_step_finish_patient = 1
+  prompt_next_doctor.classList.add('none-active')
 
   ControllerSocket.send('{"break" : 1}')
 
@@ -97,11 +96,24 @@ function finish_patient(event) {
 
 
   if (additional.includes(departament)) { 
-    patient_form_submit()
-    setTimeout(give_me_patient, 1500)
-    main_number.textContent = ''
-    finish_patient_btn.classList.add('none-active')
-    return 
+    
+    if (two_step_finish_patient === 1) {
+      patient_form_submit()
+      main_number.textContent = ''
+      main_number.classList.add('none-active')
+      two_step_finish_patient++
+      return 
+    }
+
+    if (two_step_finish_patient === 2) {
+
+      finish_patient_btn.classList.add('none-active')
+      prompt_next_doctor.classList.add('none-active')
+      main_number.classList.remove('none-active') 
+      two_step_finish_patient === 1
+      setTimeout(give_me_patient, 1500)
+
+    } 
   }
 
 
@@ -109,24 +121,27 @@ function finish_patient(event) {
     main_number.classList.add('none-active')
     next_doctors_form.classList.remove('none-active')
     two_step_finish_patient++
-    break_btn.classList.remove('none-active')
     return 
   }
 
   if (two_step_finish_patient === 2) {
-
     patient_form_submit()
     main_number.textContent = ''
-    main_number.classList.remove('none-active')
-    finish_patient_btn.classList.add('none-active')
     next_doctors_form.classList.add('none-active')
-    break_btn.classList.add('none-active')
-    two_step_finish_patient = 1
-
-    setTimeout(give_me_patient, 1500)
+    break_btn.classList.remove('none-active')
+    two_step_finish_patient++
+    return 
   }
+
+  if (two_step_finish_patient === 3) {
+    two_step_finish_patient = 1
+    setTimeout(give_me_patient, 1500)
+    break_btn.classList.add('none-active')
+    main_number.classList.remove('none-active')
+    prompt_next_doctor.classList.add('none-active')
 }
 
+}
 
 function patient_form_submit() { 
   let checked_departament = []
@@ -202,6 +217,15 @@ ControllerSocket.onmessage = function(event) {
     return 
   }
 
+  
+  if (data.next_doctor) { 
+    next_doctor = data.next_doctor
+    prompt_next_doctor.textContent = `Следующее направление пациента - ${next_doctor}`
+    prompt_next_doctor.classList.remove('none-active')
+    return 
+ }
+
+
   let next_number = data.next_number
 
   console.log(next_number)
@@ -229,10 +253,6 @@ ControllerSocket.onmessage = function(event) {
   noone_title.classList.add('none-active')
   finish_patient_btn.classList.remove('none-active')
   break_btn.classList.add('none-active') 
-
-  if (additional.includes(departament)) { 
-    break_btn.classList.remove('none-active') 
-  }
 
 } 
 

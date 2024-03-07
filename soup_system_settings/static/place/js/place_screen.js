@@ -47,6 +47,10 @@ placeSocket.onmessage = function(event) {
 
     console.log(data)
 
+    if (data.next_doctor) { 
+        return
+    }
+
     if (data.close) { 
         main_number.textContent = '' 
         not_active_title.classList.remove('none-active') 

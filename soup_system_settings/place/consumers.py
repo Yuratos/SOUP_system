@@ -72,31 +72,49 @@ class PlaceConsumer(AsyncWebsocketConsumer):
         departament = text_data_json['departament']
         place = text_data_json['place']
         fio = text_data_json.get('fio')
+        
         patient_departaments = text_data_json.get('end_patient')
-        if patient_departaments:
+        
+        if text_data_json.get('end_patient'):
+            need_queue = main_queue.find_one({'name': departament})
+            cabinets_patients = need_queue.get('patients_in_cabinets')
+            patient = cabinets_patients[place] 
             
+                       
             if patient_departaments == 'nothing': 
                 return 
                 
+                
             with lock(departament, timeout=2):
-                need_queue = main_queue.find_one({'name': departament})
-                cabinets_patients = need_queue.get('patients_in_cabinets')
-                patient = cabinets_patients[place] 
-                new_doctors = Patient.extend_doctors(patient.get('doctors'), patient_departaments)  
+                
+                new_doctors = Patient.extend_doctors(patient.get('doctors'), patient_departaments)
+                next_doctor = new_doctors[0]
+                
+                
+                await self.channel_layer.group_send (
+                    self.palce_group_name,
+                    {
+                        'type': 'next_doctor',
+                        'next_doctor': next_doctor
+                    }
+                )
+                
+                print(next_doctor)
+                
                 patient['doctors'] = new_doctors
                 main_queue.update_one(
-                        {"name": new_doctors[0]},  
+                        {"name": next_doctor},  
                         {"$push": {"participant_queue": patient}})     
                 
                 main_queue.update_one(
                         {"name": departament},
                         {"$unset": {f"patients_in_cabinets.{place}": ""}}
-                        )      
+                        ) 
             return 
                 
                 
         criteria = {'name': departament}
-
+        
         with lock(departament, timeout=2):
             need_queue = main_queue.find_one({"name": departament})
             check = need_queue['check']
@@ -179,6 +197,13 @@ class PlaceConsumer(AsyncWebsocketConsumer):
     async def break_controller(self, event):
         await self.send(text_data=json.dumps({
             'break': '1'
+        }))
+    
+    
+    async def next_doctor(self, event):
+        next_doctor = event['next_doctor']
+        await self.send(text_data=json.dumps({
+            'next_doctor': next_doctor
         }))
 
 

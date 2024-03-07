@@ -114,10 +114,18 @@ form {
     margin: 5% 0%;
 }
 
-#noone{ 
+#noone { 
     font-size: calc(3vw + 2px);
     margin: 8% 0%;
 }
+
+
+#prompt { 
+    color: rgb(11, 179, 61);
+    font-size: calc(2vw + 2px);
+    margin: 8% 0%;
+}
+
 
 
 
