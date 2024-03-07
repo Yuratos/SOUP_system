@@ -60,6 +60,15 @@ class PlaceConsumer(AsyncWebsocketConsumer):
             )
             return
         
+        if text_data_json.get('break'):
+            await self.channel_layer.group_send(
+                self.palce_group_name,
+                {
+                    'type': 'break_controller',
+                }
+            )
+            return
+        
         departament = text_data_json['departament']
         place = text_data_json['place']
         fio = text_data_json.get('fio')
@@ -166,6 +175,12 @@ class PlaceConsumer(AsyncWebsocketConsumer):
             'close': '1'
         }))
         
+        
+    async def break_controller(self, event):
+        await self.send(text_data=json.dumps({
+            'break': '1'
+        }))
+
 
     async def next_number(self, event):
         place = event['place']
@@ -179,4 +194,6 @@ class PlaceConsumer(AsyncWebsocketConsumer):
             'next_number': next_number,
             'departament': departament
         }))
+        
+        
 

@@ -54,6 +54,12 @@ placeSocket.onmessage = function(event) {
         return
     }
 
+    if (data.break) { 
+        console.log('break')
+        main_number.textContent = 'Проветривание'
+        return  
+    }
+
     console.log(data.fio)
 
     if (data.fio == "Идут сопутствующие процедуры") { 

@@ -80,6 +80,9 @@ function take_break(event) {
   break_btn.classList.add('none-active')
   return_btn.classList.remove('none-active')
   two_step_finish_patient = 1
+
+  ControllerSocket.send('{"break" : 1}')
+
 }
 
 function return_to_work(event) { 
@@ -194,6 +197,10 @@ ControllerSocket.onopen = function(event) {
 ControllerSocket.onmessage = function(event) {
 
   let data = JSON.parse(event.data);
+
+  if (data.break) { 
+    return 
+  }
 
   let next_number = data.next_number
 
