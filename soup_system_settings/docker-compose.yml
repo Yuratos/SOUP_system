@@ -1,0 +1,56 @@
+version: '3'
+
+volumes:
+  django: 
+
+services:
+
+  django:
+    container_name: django
+    build: 
+      context: ../
+
+      dockerfile: soup_system_settings/dockerfile
+    volumes:
+      - django:/usr/src/soup_system_settings
+    ports:
+      - "8000:8000"
+    depends_on:
+      
+      - mongodb
+      - redis
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin-container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: aadmin_aDminovich@example.com
+      PGADMIN_DEFAULT_PASSWORD: ffFel#jfc(1)
+    ports:
+      - "5050:80"
+    networks:
+      - dbnetwork
+
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    environment:
+      - name=value
+    ports:
+      - "5052:5052"
+    networks:
+      - dbnetwork
+
+  mongodb:
+    image: mongo
+    container_name: mongo-container
+    environment:
+      - name=value
+    ports:
+      - "2323:2323"
+    networks:
+      - dbnetwork
+
+networks:
+  dbnetwork:
+    driver: bridge

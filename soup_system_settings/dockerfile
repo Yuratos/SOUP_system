@@ -1,0 +1,23 @@
+FROM python:3.11
+
+SHELL ["/bin/bash", "-c"]
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN pip install --upgrade pip
+
+
+# Create a user and directory
+WORKDIR /soup
+
+
+# Install the project dependencies
+
+COPY  . .
+RUN pip install --no-cache-dir -r requirements.txt
+WORKDIR /soup/soup_system_settings
+EXPOSE 8000  
+
+RUN python manage.py runserver 
