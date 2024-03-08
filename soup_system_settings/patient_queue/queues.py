@@ -37,8 +37,7 @@ class GeneralQueue():
         elif queue_key == 2: 
             self.participant_queue.append(patient)
             
-        
-    
+            
     
     def check_queues_is_empty(self):
         

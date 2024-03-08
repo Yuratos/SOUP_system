@@ -4,7 +4,7 @@ MONGO_HOST = '127.0.0.1'
 MONGO_PORT = '27017'
 
 mongo_client = MongoClient(host=MONGO_HOST ,
-                      port=int('27017'),
+                      port=int(MONGO_PORT),
                      )
 
 db = mongo_client['soup_bd']

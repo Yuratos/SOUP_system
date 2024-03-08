@@ -8,5 +8,7 @@ class Command(BaseCommand):
     help = 'Заполняет MongoDB необходимыми значениями'
 
     def handle(self, *args, **kwargs):
-        main_places.update_one({'name': 'free_places'}, {'$set': {'free': FREE_PLACES}})
+        main_places.update_one({'name': 'free_places'}, {'$set': {'free': FREE_PLACES}})        
         call_command('runserver')
+
+

@@ -11,41 +11,19 @@
 </head>
 <body>
   
-    <div class="remove-personal-form-block" id = 'remove-block'>
+    <div class="remove-personal-form-block none-active" id = 'remove-block'>
         <div class="remove-personal-div">
             <button class="close-form remove" id = 'close-remove'>
                 <img src="{% static 'admin_lk/img/logout.svg' %}" alt="" class="close-form icon-img">
             </button>
-            <h2 class="remove-pers-title">Вы уверены, что вы хотите удалить Игната Игнатьевича?</h2>
+            <h2 class="remove-pers-title" id = 'remove-text'>Вы уверены, что вы хотите удалить Игната Игнатьевича?</h2>
             <div class="two-btn-accept">
-                <button class = 'remove-personal-btn agree'>Да</button>
-                <button class = 'remove-personal-btn disagree'>Нет</button>
+                <button class = 'remove-personal-btn agree' id = 'remove-btn-agree'>Да</button>
+                <button class = 'remove-personal-btn disagree' id = 'remove-btn-disagree'>Нет</button>
             </div>
         </div>
     </div>
 
-    <div class="add-personal-form-block none-active" >
-        <div class="form-personal-div">
-            <button class="close-form add">
-                <img src="{% static 'admin_lk/img/logout.svg' %}" alt="" class="close-form icon-img">
-            </button>
-            <h2 class="add-pers-title">Добавление нового работника</h2>
-            <form action="" class = 'form-add-form' method="post">
-                <label for="surnamename">Фамилия</label>
-                <input type="text" id='surname' class = 'input-text'>
-                <label for="name">Имя</label>
-                <input type="text" id='name' class = 'input-text'>
-                <label for="last_name">Отчество</label>
-                <input type="text" id='last_name' class = 'input-text'>
-                <label for="depertamnet">Направление</label>
-                <select id = 'depertamnet' class="input-text">
-                    <option value="">Привет</option>
-                </select>
-                <button class="accept-new-personal-btn" type="submit">Добавить</button>
-            </form>
-            <div class="border-form"></div>
-        </div>
-    </div>
     <heder class="header">
         <div class="container">
             <nav class="nav">
@@ -56,7 +34,7 @@
                 </div>
                 <div class="content-header search">
                     <img src="{% static 'admin_lk/img/search-black.svg' %}" alt="" class="icon-img">
-                    <input type="text" class = 'search-input' placeholder="Поиск по сотрудникам">
+                    <input type="text" class = 'search-input' placeholder="Поиск по сотрудникам" id = 'search'>
                 </div>
                 <div class="info">
                     <img src="{% static 'admin_lk/img/admin-photo.png' %}" alt="" class = 'admin-img'>
@@ -92,11 +70,11 @@
             <div class="main-admin-content">
                 <div class="side-bar">
                     <ul class="side-bar-navigation">
-                        <li class="side-bar-item">
+                        <li class="side-bar-item" id = 'doctor-settings'>
                             <img src="{% static 'admin_lk/img/side-bar-logo.svg' %}" alt="" class="side-bar-logo">
                             <a href="#!">Врачебный состав</a>
                         </li>
-                        <li class="side-bar-item">
+                        <li class="side-bar-item" id = 'place-settings'>
                             <img src="{% static 'admin_lk/img/door.png' %}" alt="" class="side-bar-logo">
                             <a href="#!">Кабинеты</a>
                         </li>
@@ -104,51 +82,37 @@
                 </div>
                 <div class="admin-settings">
                     <div class="add-personal">
-                        <div class = 'add-btn-click'>
+                        <div class = 'add-btn-click' id = 'add-btn-click'>
                         <p>Добавить работника</p>
                         <img src="{% static 'admin_lk/img/green-plus.svg ' %}" alt="" class="img-add-personal icon-img">
                         </div>
                     </div>
                     <div class = 'title-personal'>
-                        <h2 class="personal-title">
+                        <h2 class="personal-title" id = 'main-screen-title'>
                             Состав мед.работников, входящих в СУПП 
                         </h2>
                     </div>
-                    <ul class="person-list">
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button id = 'remove-btn'><img src="{% static 'admin_lk/img/red-cross.svg ' %}" alt="" class = 'icon-img'></button>
-                        </li>
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button><img src="{% static 'admin_lk/img/red-cross.svg ' %}" alt="" class = 'icon-img'></button>
-                        </li>
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button><img src="{% static 'admin_lk/img/red-cross.svg ' %}" alt="" class = 'icon-img'></button>
-                        </li>
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button><img src="{% static 'admin_lk/img/red-cross.svg ' %}" alt="" class = 'icon-img'></button>
-                        </li>
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button><img src="{% static 'admin_lk/img/red-cross.svg ' %}" alt="" class = 'icon-img'></button>
-                        </li>
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button><img src="{% static 'admin_lk/img/red-cross.svg ' %}" alt="" class = 'icon-img'></button>
-                        </li>
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button><img src="{% static 'admin_lk/img/red-cross.svg ' %}" alt="" class = 'icon-img'></button>
-                        </li>
-                        <li class="person-card">
-                            <h3 class="fio">Игнат Игнатьевич Игнатов<span> - Хирургия</span></h3>
-                            <button><img src="{% static 'admin_lk/img/red-cross.svg ' %}" alt="" class = 'icon-img'></button>
-                        </li>
-                        
+                    <ul class="person-list" id = 'person-list'>    
                     </ul>
+                    <div class="form-personal-div none-active" id = 'form-personal-div'>
+                        <button class="close-form add" id = "close-form add">
+                            <img src="{% static 'admin_lk/img/logout.svg' %}" alt="" class="close-form icon-img">
+                        </button>
+                        <h2 class="add-pers-title">Добавление нового работника</h2>
+                        <form  class = 'form-add-form' id = 'doctor-form'>
+                            <label for="surnamename">Фамилия</label>
+                            <input type="text" id='surname' class = 'input-text'>
+                            <label for="name">Имя</label>
+                            <input type="text" id='name' class = 'input-text'>
+                            <label for="last_name">Отчество</label>
+                            <input type="text" id='last_name' class = 'input-text'>
+                            <label for="depertamnet">Направление</label>
+                            <select id = 'depertamnet_choice' class="input-text">
+                            </select>
+                        </form>
+                        <button class="accept-new-personal-btn" type="" id = 'accept-new-personal-btn'>Добавить</button>
+                        <div class="border-form"></div>
+                    </div>
                 </div>
             </div>
         </div>

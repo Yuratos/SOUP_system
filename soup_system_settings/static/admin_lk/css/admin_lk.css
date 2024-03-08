@@ -8,6 +8,15 @@ body {
     font-family: 'Nunito Sans';
 }
 
+.accept-new-personal-btn:hover { 
+    background-color: #78c46f;
+}
+
+.accept-new-personal-btn:active { 
+    position: relative;
+    top: 1px;
+}
+
 .container { 
     max-width: 1260px;
     padding: 0 30px;
@@ -39,12 +48,14 @@ body {
 }
 
 .add-pers-title {
-    font-size: calc(1vw + 10px);
+    font-size: calc(0.7vw + 8px);
     margin-bottom: 5%;
     text-decoration: underline;
 }
 
 .form-personal-div { 
+    margin-top: 2px;
+    background-color: white;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -55,7 +66,6 @@ body {
     opacity: 1;
     padding: 5%;
     padding-top: 45px;
-    background-color: white;
 }
 
 .border-form {
@@ -117,7 +127,7 @@ body {
 }
 
 .form-add-form { 
-    font-size: calc(0.7vw + 10px);
+    font-size: calc(0.6vw + 8px);
     display: flex;
     justify-content: center;
     flex-direction: column;

@@ -29,75 +29,85 @@
           <button class="close" id = 'close_btn'>
             <img src="{% static 'place/img/red-cross.svg' %}" alt="" class = 'img-close'>
           </button>
+
+          <button class="break none-active" id = 'break-btn'>
+            <img src="{% static 'place/img/break.png' %}" alt="" class = 'img-break' id = 'img-break'>
+          </button>
+
+          <button class="break none-active" id = 'return-btn'>
+            <img src="{% static 'place/img/return_to_work.png' %}" alt="" class = 'img-break' id = 'img-return'>
+          </button>
+
           <h2 class="title-fio"><span id='departament-name'>{{ doctor_departament }}</span><br><span id='fio'>{{doctor_fio}}</span></h2>
           <div class="border"></div>
           <p class="check-p">Пожалуйста, отметьте при необходимости следующих<br>врачей для пациента</p>
           <div class="pop3"></div>
           <h1 class = 'main-number' id = 'main-number'></h1>
           <h1 id = 'noone' class = 'noone-title none-active'>В очереди пока никого нет</h1>
+          <h1 id = 'prompt' class = 'noone-title none-active'></h1>
           <form class = 'none-active' id = 'form'>
             <div>
               <div class="form-check form-switch ">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Педиатрия">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Педиатрия</label>
+              </div>
+              <div class="form-check form-switch ">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="ЛОР">
+                <label class="form-check-label" for="flexSwitchCheckChecked">ЛОР</label>
+              </div>
+              <div class="form-check form-switch ">
                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Хирургия">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Хирургия</label>
-              </div>
-              <div class="form-check form-switch ">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Лор">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Лор</label>
-              </div>
-              <div class="form-check form-switch ">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Травматология">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Травматология</label>
+                <label class="form-check-label" for="flexSwitchCheckChecked">Хирургия</label>
               </div>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Сдача мочи</label>
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="КТ">
+                <label class="form-check-label" for="flexSwitchCheckChecked">КТ</label>
               </div>
             </div>
             <div>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Гастроэнтерология">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Гастроэнтерология</label>
-              </div>
-              <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Травматология">
                 <label class="form-check-label" for="flexSwitchCheckChecked">Травматология</label>
               </div>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Травматология">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Травматология</label>
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Офтальмология">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Офтальмология</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Нейрохирургия">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Нейрохирургия</label>
               </div>
               <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckChecked">МРТ</label>
+                <label class="form-check-label" for="flexSwitchCheckChecked">Не возвращать пациента</label>
               </div>
             </div>
             <div>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Гастроэнтерология</label>
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value = "Ортопантамограф">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Ортопантамограф</label>
               </div>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" >
-                <label class="form-check-label" for="flexSwitchCheckChecked">Гастроэнтерология</label>
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value = "Рентген" >
+                <label class="form-check-label" for="flexSwitchCheckChecked">Рентген</label>
               </div>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Гастроэнтерология</label>
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value = "Лаборатория">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Лаборатория</label>
               </div>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Сдача крови</label>
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="УЗИ">
+                <label class="form-check-label" for="flexSwitchCheckChecked">УЗИ</label>
               </div>
             </div>
           
           </form>
-            <button class = 'send-btn none-active' id = 'finish-patient-btn'>Закончить прием пациента</button>
-            <div class="cabinet">
-            <h3 class="title-cabinet">Вы вeдете прием в кабинете # <span id = 'place-name'>{{ place_controller_number }}</span></h3>
-            </div>
-        </div>
-        </div> 
+          <button class = 'send-btn none-active' id = 'finish-patient-btn'>Закончить прием пациента</button>
+          <div class="cabinet">
+            <h3 class="title-cabinet">Вы вeдете прием в <span id = 'place-name'>{{ place_controller_number }}</span></h3>
+          </div>
+      </div>
+    </div> 
         <div class = 'layer  none-active' ></div>
     </div>
     <script src="{% static 'place/js/place_controller.js' %}"></script>

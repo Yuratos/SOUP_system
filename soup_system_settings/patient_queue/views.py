@@ -14,14 +14,25 @@ class RegisterPatientAPIView(APIView):
 
     def post(self, request) -> Response:
         patient = PatientSerializer(data=request.data)
+        data = request.data
         if patient.is_valid():
             patient.save()
-            surname = request.data.get('surname') 
-            personal_id = request.data.get('personal_id') 
-            departaments = request.data.get('departaments') 
-            patient_object = Patient.to_json(surname, personal_id, departaments)
+            surname = data.get('surname') 
+            personal_id = data.get('personal_id') 
+            departaments = data.get('departaments') 
+            is_gold = data.get('is_gold') 
+            patient_object = Patient.to_json(surname, personal_id, is_gold,  departaments)
             patient_departaments = patient_object.get('doctors')
             need_queue = patient_departaments[0]
+            method = "$push"
+            
+            if (is_gold): 
+                main_queue.update_one(
+                    {"name": need_queue},  
+                    {"$push": {"newbies_queue": {"$each": [patient_object], "$position": 2}}}
+                    )
+                return Response({'code': 200, 'status': 'ok'})
+            
             main_queue.update_one(
                         {"name": need_queue},  
                         {"$push": {"newbies_queue": patient_object}})           

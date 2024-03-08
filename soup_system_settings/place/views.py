@@ -1,15 +1,12 @@
 import re
-from django.http import Http404, HttpRequest
+from django.http import Http404
 from django.http.response import HttpResponse as HttpResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.shortcuts import  render
 from django.views import View
-from rest_framework.views import APIView
 from django.utils.decorators import method_decorator
-from rest_framework.parsers import JSONParser
 from django.views.decorators.cache import never_cache
 from patient_queue.mongo_db import main_places, main_queue
-from rest_framework.response import Response
+from patient_queue.departaments_objects import ADDITIONAL_DEPARTAMENTS_NAME
 
 # Create your views here.
 
@@ -18,14 +15,26 @@ from rest_framework.response import Response
 class PlaceController(View):
 
     def get(self, request, place_name, doctor_info):
-        pattern = r"^\w+\s\w+\s\w+\s-\s\w+$"
+        pattern = r"^[\w-]+\s[\w-]+\s[\w-]+\s-\s[\w-]+(\s\w+)?$"
         
-        if not re.match(pattern, doctor_info):
+        if not re.match(pattern, doctor_info) and doctor_info not in ADDITIONAL_DEPARTAMENTS_NAME:
             raise Http404()
         
-        fio = doctor_info.split('-')[0].strip()
+        doctor_info = doctor_info.split('-')
         
-        departament = doctor_info.split('-')[1].strip()
+        if len(doctor_info) > 2: 
+            fio =  doctor_info[0].strip()
+            departament = 'Челюстно-лицевая хирургия'
+        
+        elif len(doctor_info) == 1: 
+            fio = 'Идут сопутствующие процедуры' 
+            departament = doctor_info[0].strip()
+        
+        else:   
+            fio = doctor_info[0].strip()
+            departament = doctor_info[1].strip()
+            
+        print(departament)
 
         need_queue = main_queue.find_one({'name': departament})
         
@@ -35,14 +44,13 @@ class PlaceController(View):
             check = need_queue.get('check')
             patient = check_doctor_mistake[place_name]
             patient['doctors'].insert(0, departament)
-            print(patient)
-            
+
             main_queue.update_one(
                 {"name": departament},
                 {"$unset": {f"patients_in_cabinets.{place_name}": ""}}
                 )
                 
-
+                
             if not check: 
                 main_queue.update_one(
                     {"name": departament},  
@@ -59,7 +67,7 @@ class PlaceController(View):
         context = {'place_controller_number': place_name,
                    'doctor_fio': fio, 'doctor_departament': departament}
         
-        
+
         return render(request, 'place/place_controller.html', context=context)
 
 
@@ -67,4 +75,3 @@ class PlaceScreen(View):
     def get(self, request, place_number):
         context = {'place_number': place_number}
         return render(request, 'place/place_screen.html', context=context)
-
