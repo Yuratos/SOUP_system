@@ -40,7 +40,7 @@
 
           <h2 class="title-fio"><span id='departament-name'>{{ doctor_departament }}</span><br><span id='fio'>{{doctor_fio}}</span></h2>
           <div class="border"></div>
-          <p class="check-p">Пожалуйста, отметьте при необходимости следующих<br>врачей для пациента</p>
+          <p class="check-p" id = 'check-p'>Пожалуйста, отметьте при необходимости следующих<br>врачей для пациента</p>
           <div class="pop3"></div>
           <h1 class = 'main-number' id = 'main-number'></h1>
           <h1 id = 'noone' class = 'noone-title none-active'>В очереди пока никого нет</h1>
@@ -77,8 +77,8 @@
                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="Нейрохирургия">
                 <label class="form-check-label" for="flexSwitchCheckChecked">Нейрохирургия</label>
               </div>
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+              <div class="form-check form-switch" id = 'not_return'>
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value = 'no_return'>
                 <label class="form-check-label" for="flexSwitchCheckChecked">Не возвращать пациента</label>
               </div>
             </div>

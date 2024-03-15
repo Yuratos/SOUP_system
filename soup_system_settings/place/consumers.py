@@ -1,38 +1,61 @@
 import json
-import requests
 import asyncio
 from django_lock import lock
-from asgiref.sync import async_to_sync
 from channels.generic.websocket import AsyncWebsocketConsumer
 from patient_queue.mongo_db import main_places, main_queue
 from patient_queue.patient import Patient
+from patient_queue.models import Patient_Model, Remote_From_Queue_PatientModel
 
+
+def del_patient_from_queue(personal_id, surname): 
+    try: 
+        Patient_Model.objects.delete(personal_id = personal_id, surname = surname)
+        Remote_From_Queue_PatientModel.objects.create(personal_id = personal_id, surname = surname)
+    
+    except Exception as error: 
+        pass #Добавить логирование 
+
+
+def send_patient_to_queue(patient, next_doctor, main_queue): 
+    
+      if patient.get('is_gold'): 
+          main_queue.update_one(
+            {"name": next_doctor},  
+            {"$push": {"participant_queue": {"$each": [patient], "$position": 2}}}
+            )
+                        
+      else:     
+          main_queue.update_one(
+            {"name": next_doctor},
+            {"$push": {"participant_queue": patient}}
+            )
+                        
+    
 
 
 class PlaceConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.place_name = self.scope['url_route']['kwargs']['place_name']
-        self.palce_group_name = 'place_%s' % self.place_name
+        self.place_group_name = 'place_%s' % self.place_name
         query_string = self.scope['query_string'].decode()
-        
+
         await asyncio.sleep(0.6)
-        
+
         if query_string == 'open':
             criteria = {'name': 'free_places'}
             update = {'$pull': {'free': self.place_name}}
             result = main_places.find_one_and_update(criteria, update)
 
         await self.channel_layer.group_add(
-            self.palce_group_name,
+            self.place_group_name,
             self.channel_name
         )
 
         await self.accept()
-        
 
     async def disconnect(self, close_code):
-        
+
         if close_code == 1001:
             return
 
@@ -41,84 +64,117 @@ class PlaceConsumer(AsyncWebsocketConsumer):
 
         main_places.find_one_and_update(criteria, update)
 
-
         await self.channel_layer.group_discard(
-            self.palce_group_name,
+            self.place_group_name,
             self.channel_name
         )
-        
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
 
         if text_data_json.get('close'):
             await self.channel_layer.group_send(
-                self.palce_group_name,
+                self.place_group_name,
                 {
                     'type': 'close_controller',
                 }
             )
             return
-        
+
         if text_data_json.get('break'):
             await self.channel_layer.group_send(
-                self.palce_group_name,
+                self.place_group_name,
                 {
                     'type': 'break_controller',
                 }
             )
             return
-        
+
         departament = text_data_json['departament']
         place = text_data_json['place']
         fio = text_data_json.get('fio')
-        
+
         patient_departaments = text_data_json.get('end_patient')
         
-        if text_data_json.get('end_patient'):
+        # Когда получаем от сокета информацию о окончании приема пациента
+        if patient_departaments:
             need_queue = main_queue.find_one({'name': departament})
             cabinets_patients = need_queue.get('patients_in_cabinets')
-            patient = cabinets_patients[place] 
+            patient = cabinets_patients.get(place)
+            next_doctors = patient.get('doctors')
+    
+            if patient.get('first_visit'): 
+                del patient['first_visit']
             
-                       
-            if patient_departaments == 'nothing': 
-                return 
+                        
+            if patient_departaments == 'nothing':
+                print('step_1')
+                print(next_doctors)
                 
+                if len(next_doctors) == 0 and not patient.get('return_to'): 
+                    print('step_2')
+                    del_patient_from_queue(patient.get('personal_id'), patient.get('surname'))
+                    next_doctor = 'Отсутствует'
+                    print('step_2')
+
                 
-            with lock(departament, timeout=2):
+                elif len(next_doctors) == 0 and patient.get('return_to'): 
+                    next_doctor = patient.get('return_to')
+                    next_doctors.append(next_doctor)
+                    try:
+                        del patient['return_to']
+                    except Exception as err: 
+                        pass 
+                    
+                    
+                else: 
+                    next_doctor = next_doctors[0]
+                    # send_patient_to_queue(patient, next_doctor, main_queue)
+                    
+                    
                 
-                new_doctors = Patient.extend_doctors(patient.get('doctors'), patient_departaments)
-                next_doctor = new_doctors[0]
+            else: 
+                if 'no_return' in patient_departaments: # Если врач отметил, что пациента возвращать не нужно
+                    try:
+                        del patient_departaments[patient_departaments.index('no_return')]
+                        del patient['return_to']
+                    except Exception as err: 
+                            pass 
                 
+                # Удаление пациента, если никаких врачей не передано и пациента не нужно возвращать
+                if len(patient_departaments) == len(next_doctors) == 0:
+                    del_patient_from_queue(patient.get('personal_id'), patient.get('surname'))
+                    next_doctor = 'Отсутствует'
                 
-                await self.channel_layer.group_send (
-                    self.palce_group_name,
-                    {
+                else:
+                    new_doctors = Patient.extend_doctors(next_doctors, patient_departaments)
+                    next_doctor = new_doctors[0]
+                    patient['doctors'] = new_doctors
+                    
+                
+            await self.channel_layer.group_send(
+                self.place_group_name,
+                {
                         'type': 'next_doctor',
                         'next_doctor': next_doctor
-                    }
-                )
+                }
+            )
                 
-                print(next_doctor)
+            main_queue.update_one(
+                {"name": departament},
+                {"$unset": {f"patients_in_cabinets.{place}": ""}}
+            )
+            
+            with lock(departament, timeout=2):
+                send_patient_to_queue(patient, next_doctor, main_queue)
                 
-                patient['doctors'] = new_doctors
-                main_queue.update_one(
-                        {"name": next_doctor},  
-                        {"$push": {"participant_queue": patient}})     
-                
-                main_queue.update_one(
-                        {"name": departament},
-                        {"$unset": {f"patients_in_cabinets.{place}": ""}}
-                        ) 
-            return 
-                
-                
-        criteria = {'name': departament}
-        
-        with lock(departament, timeout=2):
-            need_queue = main_queue.find_one({"name": departament})
-            check = need_queue['check']
+            return
 
+        criteria = {'name': departament}
+        need_queue = main_queue.find_one({"name": departament})
+        check = need_queue.get('check')
+
+        with lock(departament, timeout=2): 
             main_queue.update_one(
                 criteria,
                 {"$set": {"check": not check}}
@@ -138,15 +194,15 @@ class PlaceConsumer(AsyncWebsocketConsumer):
 
             if len(defacto_queue) == len(none_defacto_queue) == 0:
 
-                await self.channel_layer.group_send (
-                    self.palce_group_name,
+                await self.channel_layer.group_send(
+                    self.place_group_name,
                     {
                         'type': 'next_number',
                         'departament': departament,
                         'place': place,
                         'fio': fio,
-                        'next_number': 0
-
+                        'next_number': 0,
+                        'first_in': 0
                     }
                 )
                 return
@@ -155,15 +211,18 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                 defacto_queue = none_defacto_queue
                 defacto_name = none_defacto_name
 
+            if defacto_name == 'newbies_queue':
+                first_in = 1
+            else:
+                first_in = 0
+
             next_number = defacto_queue[0]['personal_id']
             pop_doctor = defacto_queue[0]['doctors'].pop(0)
             patient = defacto_queue[0]
 
             updates = {
-
-                # Удаление первого элемента из newbies_queue
+                # Удаление первого элемента из очереди
                 "$pop": {f"{defacto_name}": -1}
-
             }
 
             main_queue.update_one(criteria, updates)
@@ -175,16 +234,16 @@ class PlaceConsumer(AsyncWebsocketConsumer):
             }
 
             main_queue.update_one(criteria, updates)
-            
-        
+
         await self.channel_layer.group_send(
-            self.palce_group_name,
+            self.place_group_name,
             {
                 'type': 'next_number',
                 'departament': departament,
                 'place': place,
                 'fio': fio,
-                'next_number':  next_number
+                'next_number':  next_number,
+                'first_in': first_in
             }
         )
 
@@ -192,33 +251,28 @@ class PlaceConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'close': '1'
         }))
-        
-        
+
     async def break_controller(self, event):
         await self.send(text_data=json.dumps({
             'break': '1'
         }))
-    
-    
+
     async def next_doctor(self, event):
         next_doctor = event['next_doctor']
         await self.send(text_data=json.dumps({
             'next_doctor': next_doctor
         }))
 
-
     async def next_number(self, event):
         place = event['place']
         departament = event['departament']
         fio = event['fio']
         next_number = event['next_number']
-        
-        
+        first_in = event['first_in']
+
         await self.send(text_data=json.dumps({
             'fio': fio,
             'next_number': next_number,
-            'departament': departament
+            'departament': departament,
+            'first_in': first_in
         }))
-        
-        
-

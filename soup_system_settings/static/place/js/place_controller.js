@@ -46,6 +46,10 @@ let return_btn = document.getElementById('return-btn')
 
 let prompt_next_doctor = document.getElementById('prompt')
 
+let not_return_input = document.getElementById('not_return')
+
+check_p_title = document.getElementById('check-p')
+
 /* Заполнение шаблона */
 
 place_name_title.textContent = place_names[placeName]
@@ -96,22 +100,24 @@ function finish_patient(event) {
 
 
   if (additional.includes(departament)) { 
-    
+
     if (two_step_finish_patient === 1) {
       patient_form_submit()
       main_number.textContent = ''
       main_number.classList.add('none-active')
+      break_btn.classList.remove('none-active')
       two_step_finish_patient++
       return 
     }
 
     if (two_step_finish_patient === 2) {
-
+      break_btn.classList.add('none-active')
       finish_patient_btn.classList.add('none-active')
       prompt_next_doctor.classList.add('none-active')
       main_number.classList.remove('none-active') 
       two_step_finish_patient === 1
       setTimeout(give_me_patient, 1500)
+      return 
 
     } 
   }
@@ -225,6 +231,14 @@ ControllerSocket.onmessage = function(event) {
     return 
  }
 
+  
+  if (data['first_in'])  {
+    not_return_input.classList.remove('none-active')
+  }
+
+  else { 
+    not_return_input.classList.add('none-active')
+  }
 
   let next_number = data.next_number
 

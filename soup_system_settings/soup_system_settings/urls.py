@@ -6,5 +6,5 @@ urlpatterns = [
     path('doctor/', include('doctor.urls', namespace = 'doctor')), 
     path('place/', include('place.urls')), 
     path('patient_queue/', include('patient_queue.urls')),  
-    path('admin_lk/', include('admin_lk.urls'))
+    path('admin_lk/', include('admin_lk.urls')), 
 ]
