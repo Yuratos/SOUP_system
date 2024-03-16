@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-MONGO_HOST = '127.0.0.1'
+MONGO_HOST = 'mongodb'
 MONGO_PORT = '27017'
 
 mongo_client = MongoClient(host=MONGO_HOST ,

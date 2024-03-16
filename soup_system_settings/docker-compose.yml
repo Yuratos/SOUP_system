@@ -6,7 +6,7 @@ volumes:
 services:
 
   django:
-    container_name: django
+    container_name: django_s
     build: 
       context: ../
 
@@ -15,39 +15,45 @@ services:
       - django:/usr/src/soup_system_settings
     ports:
       - "8000:8000"
-    depends_on:
-      
-      - mongodb
-      - redis
-  
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin-container
-    environment:
-      PGADMIN_DEFAULT_EMAIL: aadmin_aDminovich@example.com
-      PGADMIN_DEFAULT_PASSWORD: ffFel#jfc(1)
-    ports:
-      - "5050:80"
+   #depends_on:
+   #  
+   #  - mongodb
+   #  - redis
     networks:
       - dbnetwork
+  
 
   redis:
     image: redis:latest
     container_name: redis-container
-    environment:
-      - name=value
+    
     ports:
-      - "5052:5052"
+      - "6379:6379"
     networks:
       - dbnetwork
 
   mongodb:
     image: mongo
-    container_name: mongo-container
+    container_name: mongo
     environment:
-      - name=value
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
     ports:
-      - "2323:2323"
+      - "27017:27017"
+    networks:
+      - dbnetwork
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-web 
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=sudo
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=123
+      - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongo:27017/
     networks:
       - dbnetwork
 

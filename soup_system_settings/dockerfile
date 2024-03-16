@@ -17,7 +17,7 @@ WORKDIR /soup
 
 COPY  . .
 RUN pip install --no-cache-dir -r requirements.txt
-WORKDIR /soup/soup_system_settings
-EXPOSE 8000  
-
-RUN python manage.py runserver 
+#WORKDIR /soup/
+#EXPOSE 2323 5052  
+RUN python /soup/soup_system_settings/manage.py mongo_commands
+RUN python /soup/soup_system_settings/manage.py startserver
