@@ -5,14 +5,6 @@ let main_doctor = null
 let main_place = null
 
 
-const  place_names = {'11':'Бокс 1', '12':'Бокс 2', '13':'Бокс 3','14':'Бокс 4','15':'Бокс 5', 
-'21':'Смотровая 1','22':'Смотровая 2','23':'Смотровая 3', '24':'Смотровая 4', '25':'Смотровая 5'
-}
-
-
-const  place_names_revert = {'Бокс 1': '11', 'Бокс 2': '12', 'Бокс 3': '13','Бокс 4': '14', 'Бокс 5': '15', 
-'Смотровая 1': '21','Смотровая 2': '22','Смотровая 3': '23', 'Смотровая 4': '24', 'Смотровая 5': '25' 
-}
 
 /* основные элементы'*/
 
@@ -142,7 +134,7 @@ async function get_places(event) {
         let btn = document.createElement('button')
         let li_item = document.createElement('li')
         let li_h3_item = document.createElement('h3')
-        li_h3_item.textContent = place_names[place]
+        li_h3_item.textContent = place
         li_item.appendChild(li_h3_item) 
         li_item.classList.add('doctor-item')
         li_item.onclick = choose_places
@@ -181,7 +173,7 @@ function choose_doctors(event) {
 
 
 function choose_places(event) { 
-    main_place = place_names_revert[event.target.textContent]
+    main_place = event.target.textContent
     let url = 'http://' + window.location.host + `/place/place-controller/${main_place}/${main_doctor}`
     window.location.href = url
 }

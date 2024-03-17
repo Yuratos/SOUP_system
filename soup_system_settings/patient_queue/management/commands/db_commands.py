@@ -1,11 +1,10 @@
 from django.core.management.base import BaseCommand
 from doctor.models import Departaments
-from patient_queue.mongo_db import mongo_client
 from patient_queue.departaments_objects import ALL_DEPARTAMENTS_NAME
 
 
 class Command(BaseCommand):
-    help = 'Заполняет MongoDB необходимыми значениями'
+    help = 'Заполняет реляционную БД необходимыми значениями'
 
     def handle(self, *args, **kwargs):
         try:

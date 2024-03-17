@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from . models import Doctor
 from patient_queue.departaments_objects import ALL_DEPARTAMENTS_NAME
+from . models import Doctor
 
 
 class DoctorSerializer(serializers.Serializer):
 
-    method = serializers.ChoiceField(['add', 'delete'])
+    method = serializers.ChoiceField(['add', 'delete']) # проверяем, чтобы был передан метод 
     fio = serializers.CharField()
     departament = serializers.ChoiceField(ALL_DEPARTAMENTS_NAME)
 
@@ -25,7 +25,3 @@ class DoctorSerializer(serializers.Serializer):
                 raise serializers.ValidationError({"fio":"Такого доктора нет в списке"})
         return attrs
 
-
-class PlaceSerializer(serializers.Serializer):
-    method = serializers.ChoiceField(['add', 'delete'])
-    place = serializers.CharField()

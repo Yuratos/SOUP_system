@@ -2,9 +2,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from .serializers import PatientSerializer
-from .mongo_db import main_queue
 from .patient import Patient
-from .models import Patient_Model
+from .mongo_db import main_queue
 from .departaments_objects import ADDITIONAL_DEPARTAMENTS_NAME
 
 

@@ -8,6 +8,7 @@ class ActiveDoctorsManager(models.Manager):
         return super().get_queryset().filter(is_active = True) 
     
 
+# Классы моделей 
 
 class Departaments(models.Model): 
     name = models.CharField(max_length = 60, verbose_name = 'Имя') 

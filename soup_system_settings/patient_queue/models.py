@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here. 
-class Patient_Model(models.Model):  
+class PatientModel(models.Model):  
     
     personal_id  = models.CharField(max_length = 10, verbose_name = 'Идентификатор', unique = True)
     
@@ -17,7 +17,7 @@ class Patient_Model(models.Model):
         verbose_name_plural = 'Пациенты'
 
 
-class Remote_From_Queue_PatientModel(models.Model):  
+class RemoteFromQueuePatientModel(models.Model):  
     
     personal_id  = models.CharField(max_length = 10, verbose_name = 'Идентификатор', unique = True)
     surname = models.CharField(max_length = 60, verbose_name = 'Фамилия')

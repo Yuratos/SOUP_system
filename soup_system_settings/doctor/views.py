@@ -3,18 +3,20 @@ from django.views import View
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from place.places_info import FREE_PLACES, FREE_PLACES_NAMES
-from patient_queue.departaments_objects import ADDITIONAL_DEPARTAMENTS_NAME
 from rest_framework.parsers import JSONParser
-from patient_queue.mongo_db import main_places
 from .models import Doctor, Departaments
-from .serializers import DoctorSerializer, PlaceSerializer
-# Create your views here.
+from .serializers import DoctorSerializer
+from place.places_info import FREE_PLACES
+from patient_queue.departaments_objects import ADDITIONAL_DEPARTAMENTS_NAME
+from patient_queue.mongo_db import main_places
+
+
 
 class HelloDoctorPage(View): 
     def get(self, request): 
         return render(request, 'doctor/hello_doctor.html')
     
+
 
 class GetFreePlacesAPI(APIView):
     def get(self, request): 
@@ -22,8 +24,9 @@ class GetFreePlacesAPI(APIView):
         if not request.GET.get('search'): 
             return Response({"places": free_palces})
         search_item = request.GET.get('search') 
-        free_palces = [place for place in free_palces if search_item in FREE_PLACES_NAMES.get(place)]
+        free_palces = [place for place in free_palces if search_item in place]
         return Response({"places": free_palces})
+    
     
     
 class GetAllPlacesAPI(APIView): 
@@ -43,7 +46,6 @@ class GetDoctorsAPI(APIView):
         addititional = [str(name) for name in ADDITIONAL_DEPARTAMENTS_NAME if search_letters.lower() in name.lower()]
         doctors_list = [str(doctor) for doctor in doctors]
         doctors_list.extend(addititional)
-        print(doctors_list)
         return Response({"doctors" : doctors_list})
 
 
@@ -81,14 +83,3 @@ class RemoveAddDoctorAPI(APIView):
             return Response({'status': '400', 'errors': serializer.errors})
         
 
-class RemoveAddPlaceAPI(APIView): 
-    parser_classes = [JSONParser]
-    def patch(self, request): 
-        data = request.data
-        serializer = PlaceSerializer(data=data)
-        if serializer.is_valid(): 
-            place = data.get('place')
-            if data.get('method') == 'delete': 
-                FREE_PLACES.remove(place)
-            else: 
-                FREE_PLACES.append(place)

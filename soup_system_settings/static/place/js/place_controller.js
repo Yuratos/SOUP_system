@@ -6,13 +6,6 @@ let check_empty = null
 
 const additional = ['КТ', 'Рентген', 'Ортопантамограф', 'УЗИ', 'Лаборатория']
 
-const  place_names = {'11':'Бокс 1', '12':'Бокс 2', '13':'Бокс 3','14':'Бокс 4','15':'Бокс 5', 
-'21':'Смотровая 1','22':'Смотровая 2','23':'Смотровая 3', '24':'Смотровая 4', '25':'Смотровая 5'
-}
-
-const  place_names_revert = {'Бокс 1': '11', 'Бокс 2': '12', 'Бокс 3': '13','Бокс 4': '14', 'Бокс 5': '15', 
-'Смотровая 1': '21','Смотровая 2': '22','Смотровая 3': '23', 'Смотровая 4': '24', 'Смотровая 5': '25' 
-}
 
 /* основные элементы */
 
@@ -52,7 +45,7 @@ check_p_title = document.getElementById('check-p')
 
 /* Заполнение шаблона */
 
-place_name_title.textContent = place_names[placeName]
+place_name_title.textContent = placeName
 
 /* Функции для евентов */
 
@@ -90,7 +83,7 @@ function take_break(event) {
 
 function return_to_work(event) { 
   return_btn.classList.add('none-active')
-  setTimeout(give_me_patient, 1500)
+  setTimeout(give_me_patient, 2500)
 }
 
 
@@ -108,6 +101,7 @@ function finish_patient(event) {
       break_btn.classList.remove('none-active')
       two_step_finish_patient++
       return 
+
     }
 
     if (two_step_finish_patient === 2) {
@@ -116,7 +110,7 @@ function finish_patient(event) {
       prompt_next_doctor.classList.add('none-active')
       main_number.classList.remove('none-active') 
       two_step_finish_patient === 1
-      setTimeout(give_me_patient, 1500)
+      setTimeout(give_me_patient, 2500)
       return 
 
     } 
@@ -141,7 +135,7 @@ function finish_patient(event) {
 
   if (two_step_finish_patient === 3) {
     two_step_finish_patient = 1
-    setTimeout(give_me_patient, 1500)
+    setTimeout(give_me_patient, 2500)
     break_btn.classList.add('none-active')
     main_number.classList.remove('none-active')
     prompt_next_doctor.classList.add('none-active')

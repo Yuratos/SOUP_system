@@ -6,8 +6,10 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django_lock import lock
 from django.views.decorators.cache import never_cache
-from patient_queue.mongo_db import main_places, main_queue
+from doctor.models import Doctor
+from patient_queue.mongo_db import  main_queue
 from patient_queue.departaments_objects import ADDITIONAL_DEPARTAMENTS_NAME
+from place.places_info import FREE_PLACES
 
 
 @method_decorator(never_cache, name='dispatch')
@@ -19,13 +21,12 @@ class PlaceController(View):
         if not re.match(pattern, doctor_info) and doctor_info not in ADDITIONAL_DEPARTAMENTS_NAME:
             raise Http404()
         
-        doctor_info = doctor_info.split('-')
+        if place_name not in FREE_PLACES and doctor_info not in [str(doctor) for doctor in Doctor.active.all()]: 
+            raise Http404()
         
-        if len(doctor_info) > 2: 
-            fio =  doctor_info[0].strip()
-            departament = 'Челюстно-лицевая хирургия'
-        
-        elif len(doctor_info) == 1: 
+        doctor_info = doctor_info.split('-', 1)
+           
+        if len(doctor_info) == 1: 
             fio = 'Идут сопутствующие процедуры' 
             departament = doctor_info[0].strip()
         
@@ -38,6 +39,7 @@ class PlaceController(View):
         check_doctor_mistake = need_queue.get('patients_in_cabinets')
         
         if place_name in check_doctor_mistake:
+            
             patient = check_doctor_mistake[place_name]
             patient['doctors'].insert(0, departament)
             criteria = {'name': departament}
@@ -48,6 +50,7 @@ class PlaceController(View):
                 
             else: 
                 name_queue = "participant_queue"
+                
             
             check = not check  
             

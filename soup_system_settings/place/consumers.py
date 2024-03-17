@@ -4,13 +4,18 @@ from django_lock import lock
 from channels.generic.websocket import AsyncWebsocketConsumer
 from patient_queue.mongo_db import main_places, main_queue
 from patient_queue.patient import Patient
-from patient_queue.models import Patient_Model, Remote_From_Queue_PatientModel
+from patient_queue.models import PatientModel, RemoteFromQueuePatientModel
+from .translate import translation_dict
 
+
+
+
+# Полезные функции
 
 def del_patient_from_queue(personal_id, surname): 
     try: 
-        Patient_Model.objects.delete(personal_id = personal_id, surname = surname)
-        Remote_From_Queue_PatientModel.objects.create(personal_id = personal_id, surname = surname)
+        PatientModel.objects.delete(personal_id = personal_id, surname = surname)
+        RemoteFromQueuePatientModel.objects.create(personal_id = personal_id, surname = surname)
     
     except Exception as error: 
         pass #Добавить логирование 
@@ -31,12 +36,13 @@ def send_patient_to_queue(patient, next_doctor, main_queue):
             )
                         
     
-
+# Точнка входа в веб-сокет
 
 class PlaceConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.place_name = self.scope['url_route']['kwargs']['place_name']
+        print(self.place_name)
         self.place_group_name = 'place_%s' % self.place_name
         query_string = self.scope['query_string'].decode()
 
