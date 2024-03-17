@@ -24,7 +24,7 @@ class GetFreePlacesAPI(APIView):
         if not request.GET.get('search'): 
             return Response({"places": free_palces})
         search_item = request.GET.get('search') 
-        free_palces = [place for place in free_palces if search_item in place]
+        free_palces = [place for place in free_palces if search_item.lower() in place.lower()]
         return Response({"places": free_palces})
     
     

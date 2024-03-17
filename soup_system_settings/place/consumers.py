@@ -12,13 +12,14 @@ from .translate import translation_dict
 
 # Полезные функции
 
-def del_patient_from_queue(personal_id, surname): 
+def del_patient_from_queue(personal_id, surname, is_gold): 
     try: 
-        PatientModel.objects.delete(personal_id = personal_id, surname = surname)
-        RemoteFromQueuePatientModel.objects.create(personal_id = personal_id, surname = surname)
+        print(personal_id, surname, is_gold)
+        PatientModel.objects.delete(personal_id = personal_id, surname = surname, is_gold = is_gold)
+        RemoteFromQueuePatientModel.objects.create(personal_id = personal_id, surname = surname, is_gold = is_gold)
     
     except Exception as error: 
-        pass #Добавить логирование 
+        print(error)
 
 
 def send_patient_to_queue(patient, next_doctor, main_queue): 
@@ -42,8 +43,8 @@ class PlaceConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.place_name = self.scope['url_route']['kwargs']['place_name']
-        print(self.place_name)
-        self.place_group_name = 'place_%s' % self.place_name
+        self.translate_place_name = ''.join([translation_dict.get(letter) if not letter.isdigit() else letter for letter in self.scope['url_route']['kwargs']['place_name'].lower().replace(' ', '')])
+        self.place_group_name = 'place_%s' % self.translate_place_name
         query_string = self.scope['query_string'].decode()
 
         await asyncio.sleep(0.6)
@@ -119,7 +120,7 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                 
                 if len(next_doctors) == 0 and not patient.get('return_to'): 
                     print('step_2')
-                    del_patient_from_queue(patient.get('personal_id'), patient.get('surname'))
+                    del_patient_from_queue(patient.get('personal_id'), patient.get('surname'), patient.get('is_gold'))
                     next_doctor = 'Отсутствует'
                     print('step_2')
 
@@ -149,7 +150,7 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                 
                 # Удаление пациента, если никаких врачей не передано и пациента не нужно возвращать
                 if len(patient_departaments) == len(next_doctors) == 0:
-                    del_patient_from_queue(patient.get('personal_id'), patient.get('surname'))
+                    del_patient_from_queue(patient.get('personal_id'), patient.get('surname'), patient.get('is_gold'))
                     next_doctor = 'Отсутствует'
                 
                 else:

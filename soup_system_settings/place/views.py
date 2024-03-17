@@ -21,9 +21,7 @@ class PlaceController(View):
         if not re.match(pattern, doctor_info) and doctor_info not in ADDITIONAL_DEPARTAMENTS_NAME:
             raise Http404()
         
-        if place_name not in FREE_PLACES and doctor_info not in [str(doctor) for doctor in Doctor.active.all()]: 
-            raise Http404()
-        
+
         doctor_info = doctor_info.split('-', 1)
            
         if len(doctor_info) == 1: 
@@ -38,8 +36,8 @@ class PlaceController(View):
         
         check_doctor_mistake = need_queue.get('patients_in_cabinets')
         
+        
         if place_name in check_doctor_mistake:
-            
             patient = check_doctor_mistake[place_name]
             patient['doctors'].insert(0, departament)
             criteria = {'name': departament}
