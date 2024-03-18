@@ -119,10 +119,7 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                 print(next_doctors)
                 
                 if len(next_doctors) == 0 and not patient.get('return_to'): 
-                    print('step_2')
-                    del_patient_from_queue(patient.get('personal_id'), patient.get('surname'), patient.get('is_gold'))
                     next_doctor = 'Отсутствует'
-                    print('step_2')
 
                 
                 elif len(next_doctors) == 0 and patient.get('return_to'): 
@@ -176,71 +173,83 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                 send_patient_to_queue(patient, next_doctor, main_queue)
                 
             return
-
+        
+        
+    
         criteria = {'name': departament}
         need_queue = main_queue.find_one({"name": departament})
         check = need_queue.get('check')
-
-        with lock(departament, timeout=2): 
-            main_queue.update_one(
-                criteria,
-                {"$set": {"check": not check}}
-            )
-
-            if not int(check):
-                defacto_queue = need_queue['newbies_queue']
-                none_defacto_queue = need_queue['participant_queue']
-                defacto_name = 'newbies_queue'
-                none_defacto_name = 'participant_queue'
-
-            else:
-                defacto_queue = need_queue['participant_queue']
-                none_defacto_queue = need_queue['newbies_queue']
-                defacto_name = 'participant_queue'
-                none_defacto_name = 'newbies_queue'
-
-            if len(defacto_queue) == len(none_defacto_queue) == 0:
-
-                await self.channel_layer.group_send(
-                    self.place_group_name,
-                    {
-                        'type': 'next_number',
-                        'departament': departament,
-                        'place': place,
-                        'fio': fio,
-                        'next_number': 0,
-                        'first_in': 0
-                    }
-                )
-                return
-
-            if len(defacto_queue) == 0:
-                defacto_queue = none_defacto_queue
-                defacto_name = none_defacto_name
-
-            if defacto_name == 'newbies_queue':
+        check_doctor_mistake = need_queue.get('patients_in_cabinets')
+        
+        if place in check_doctor_mistake:
+            patient = check_doctor_mistake[place]
+            if patient.get('first_visit'): 
                 first_in = 1
-            else:
+            else: 
                 first_in = 0
+            next_number = patient.get('personal_id')
+            
+        else: 
+            with lock(departament, timeout=2): 
+                main_queue.update_one(
+                    criteria,
+                    {"$set": {"check": not check}}
+                )
 
-            next_number = defacto_queue[0]['personal_id']
-            pop_doctor = defacto_queue[0]['doctors'].pop(0)
-            patient = defacto_queue[0]
+                if not int(check):
+                    defacto_queue = need_queue['newbies_queue']
+                    none_defacto_queue = need_queue['participant_queue']
+                    defacto_name = 'newbies_queue'
+                    none_defacto_name = 'participant_queue'
 
-            updates = {
-                # Удаление первого элемента из очереди
-                "$pop": {f"{defacto_name}": -1}
-            }
+                else:
+                    defacto_queue = need_queue['participant_queue']
+                    none_defacto_queue = need_queue['newbies_queue']
+                    defacto_name = 'participant_queue'
+                    none_defacto_name = 'newbies_queue'
 
-            main_queue.update_one(criteria, updates)
+                if len(defacto_queue) == len(none_defacto_queue) == 0:
 
-            updates = {
+                    await self.channel_layer.group_send(
+                        self.place_group_name,
+                        {
+                            'type': 'next_number',
+                            'departament': departament,
+                            'place': place,
+                            'fio': fio,
+                            'next_number': 0,
+                            'first_in': 0
+                        }
+                    )
+                    return
 
-                # Запись нового объекта по указанному ключу
-                "$set": {f"patients_in_cabinets.{self.place_name}": patient}
-            }
+                if len(defacto_queue) == 0:
+                    defacto_queue = none_defacto_queue
+                    defacto_name = none_defacto_name
 
-            main_queue.update_one(criteria, updates)
+                if defacto_name == 'newbies_queue':
+                    first_in = 1
+                else:
+                    first_in = 0
+
+                next_number = defacto_queue[0]['personal_id']
+                pop_doctor = defacto_queue[0]['doctors'].pop(0)
+                patient = defacto_queue[0]
+
+                updates = {
+                    # Удаление первого элемента из очереди
+                    "$pop": {f"{defacto_name}": -1}
+                }
+
+                main_queue.update_one(criteria, updates)
+
+                updates = {
+
+                    # Запись нового объекта по указанному ключу
+                    "$set": {f"patients_in_cabinets.{self.place_name}": patient}
+                }
+
+                main_queue.update_one(criteria, updates)
 
         await self.channel_layer.group_send(
             self.place_group_name,

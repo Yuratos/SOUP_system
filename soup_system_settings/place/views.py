@@ -6,10 +6,8 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django_lock import lock
 from django.views.decorators.cache import never_cache
-from doctor.models import Doctor
 from patient_queue.mongo_db import  main_queue
 from patient_queue.departaments_objects import ADDITIONAL_DEPARTAMENTS_NAME
-from place.places_info import FREE_PLACES
 
 
 @method_decorator(never_cache, name='dispatch')
@@ -32,42 +30,39 @@ class PlaceController(View):
             fio = doctor_info[0].strip()
             departament = doctor_info[1].strip()
 
-        need_queue = main_queue.find_one({'name': departament})
-        
-        check_doctor_mistake = need_queue.get('patients_in_cabinets')
-        
-        
-        if place_name in check_doctor_mistake:
-            patient = check_doctor_mistake[place_name]
-            patient['doctors'].insert(0, departament)
-            criteria = {'name': departament}
-            check = need_queue.get('check')
+        # need_queue = main_queue.find_one({'name': departament})
+        # check_doctor_mistake = need_queue.get('patients_in_cabinets')
+        # if place_name in check_doctor_mistake:
+        #     patient = check_doctor_mistake[place_name]
+        #     patient['doctors'].insert(0, departament)
+        #     criteria = {'name': departament}
+        #     check = need_queue.get('check')
             
-            if patient.get('first_visit'): 
-                name_queue = "newbies_queue"
+        #     if patient.get('first_visit'): 
+        #         name_queue = "newbies_queue"
                 
-            else: 
-                name_queue = "participant_queue"
+        #     else: 
+        #         name_queue = "participant_queue"
                 
             
-            check = not check  
+        #     check = not check  
             
-            main_queue.update_one(
-                {"name": departament},
-                {"$unset": {f"patients_in_cabinets.{place_name}": ""}}
-                )
+        #     main_queue.update_one(
+        #         {"name": departament},
+        #         {"$unset": {f"patients_in_cabinets.{place_name}": ""}}
+        #         )
             
-            with lock(departament, timeout=2): 
+        #     with lock(departament, timeout=2): 
                 
-                main_queue.update_one(
-                    criteria,
-                    {"$set": {"check": check}}
-                )
+        #         main_queue.update_one(
+        #             criteria,
+        #             {"$set": {"check": check}}
+        #         )
                 
-                main_queue.update_one(
-                    {"name": departament},  
-                    {"$push": {name_queue: {"$each": [patient], "$position": 0}}}
-                    )       
+        #         main_queue.update_one(
+        #             {"name": departament},  
+        #             {"$push": {name_queue: {"$each": [patient], "$position": 0}}}
+        #             )       
                 
             
         context = {'place_controller_number': place_name,
