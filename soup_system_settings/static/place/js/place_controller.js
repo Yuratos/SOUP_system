@@ -109,7 +109,7 @@ function finish_patient(event) {
       finish_patient_btn.classList.add('none-active')
       prompt_next_doctor.classList.add('none-active')
       main_number.classList.remove('none-active') 
-      two_step_finish_patient === 1
+      two_step_finish_patient = 1
       setTimeout(give_me_patient, 2500)
       return 
 

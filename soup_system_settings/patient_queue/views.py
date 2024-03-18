@@ -27,10 +27,16 @@ class RegisterPatientAPIView(APIView):
                 patient_object['return_to'] = need_queue
             patient_object['first_visit'] = True
             if (is_gold): 
-                main_queue.update_one(
-                    {"name": need_queue},  
-                    {"$push": {"newbies_queue": {"$each": [patient_object], "$position": 2}}}
-                    )
+                for i in range(3): 
+                    if i != 2: 
+                        patient_to_gold = 0
+                    else: 
+                        patient_to_gold =  patient_object  
+                        
+                    main_queue.update_one(
+                        {"name": need_queue},  
+                        {"$push": {"gold_queue": patient_to_gold}}, 
+                        )
                 return Response({'code': 200, 'status': 'ok'})
             
             if need_queue not in ADDITIONAL_DEPARTAMENTS_NAME: 

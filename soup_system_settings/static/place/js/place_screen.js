@@ -70,7 +70,10 @@ placeSocket.onmessage = function(event) {
     let place_main_number = data.next_number
     console.log(place_main_number)
     main_number.textContent = place_main_number 
-
+    if (place_main_number === 0) { 
+        console.log("FDFSF")
+        main_number.textContent = ''
+    }
     
 
 };

@@ -15,7 +15,7 @@ class Command(BaseCommand):
             collection_places.insert_one(free_places)
             for name in ALL_DEPARTAMENTS_NAME + ADDITIONAL_DEPARTAMENTS_NAME:
                 pattern = {'name': name, 'check': 0, 'newbies_queue': [],
-                        'participant_queue': [], 'patients_in_cabinets': {}}
+                        'participant_queue': [], 'gold_queue': [], 'patients_in_cabinets': {}}
                 collection_queue.insert_one(pattern)
             print('--Записи успешно занесены в БД--')
         

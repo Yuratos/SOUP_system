@@ -25,10 +25,21 @@ def del_patient_from_queue(personal_id, surname, is_gold):
 def send_patient_to_queue(patient, next_doctor, main_queue): 
     
       if patient.get('is_gold'): 
-          main_queue.update_one(
-            {"name": next_doctor},  
-            {"$push": {"participant_queue": {"$each": [patient], "$position": 2}}}
-            )
+          for i in range(3): 
+            if i != 2: 
+                patient_to_gold = 0
+            else: 
+                patient_to_gold =  patient 
+                        
+            main_queue.update_one(
+                    {"name": next_doctor},  
+                    {"$push": {"gold_queue": patient_to_gold}}, 
+                )
+            
+        #   main_queue.update_one(
+        #     {"name": next_doctor},  
+        #     {"$push": {"participant_queue": {"$each": [patient], "$position": 2}}}
+        #     )
                         
       else:     
           main_queue.update_one(
@@ -100,7 +111,7 @@ class PlaceConsumer(AsyncWebsocketConsumer):
         departament = text_data_json['departament']
         place = text_data_json['place']
         fio = text_data_json.get('fio')
-
+        first_in = 0 
         patient_departaments = text_data_json.get('end_patient')
         
         # Когда получаем от сокета информацию о окончании приема пациента
@@ -195,7 +206,7 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                     criteria,
                     {"$set": {"check": not check}}
                 )
-
+                 
                 if not int(check):
                     defacto_queue = need_queue['newbies_queue']
                     none_defacto_queue = need_queue['participant_queue']
@@ -207,9 +218,34 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                     none_defacto_queue = need_queue['newbies_queue']
                     defacto_name = 'participant_queue'
                     none_defacto_name = 'newbies_queue'
-
+                    
+                gold_queue = need_queue['gold_queue']
+                print(gold_queue)
+                
+                if len(gold_queue) != 0: 
+                    patient = gold_queue[0]
+                    print(patient)
+                    if patient and patient.get('first_visit'):
+                        print(20)
+                        first_in = 1 
+                        defacto_queue = gold_queue
+                        defacto_name = 'gold_queue'
+                        
+                    elif patient:
+                        print(30)
+                        defacto_queue = gold_queue
+                        defacto_name = 'gold_queue'
+                        
+                    else: 
+                        updates = {
+                            "$pop": {"gold_queue": -1}
+                        }
+                        main_queue.update_one(criteria, updates)
+                        
+                print(defacto_queue, defacto_name)
+                
                 if len(defacto_queue) == len(none_defacto_queue) == 0:
-
+                    print(100)
                     await self.channel_layer.group_send(
                         self.place_group_name,
                         {
@@ -226,11 +262,10 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                 if len(defacto_queue) == 0:
                     defacto_queue = none_defacto_queue
                     defacto_name = none_defacto_name
-
+                
+                
                 if defacto_name == 'newbies_queue':
                     first_in = 1
-                else:
-                    first_in = 0
 
                 next_number = defacto_queue[0]['personal_id']
                 pop_doctor = defacto_queue[0]['doctors'].pop(0)
