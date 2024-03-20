@@ -9,6 +9,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         main_places.update_one({'name': 'free_places'}, {'$set': {'free': FREE_PLACES}})        
-        call_command('runserver')
+        #call_command('runserver')
 
 
