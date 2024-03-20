@@ -20,7 +20,10 @@ services:
     environment:
       - "MONGO_HOST=mongodb"
       - "REDIS_HOST=redis"
-    command: sh -c "python soup_system_settings/manage.py mongo_commands &&
+    command: sh -c "python soup_system_settings/manage.py makemigrations &&
+                    python soup_system_settings/manage.py migrate &&
+                    python soup_system_settings/manage.py db_commands &&
+                    python soup_system_settings/manage.py mongo_commands &&
                     python soup_system_settings/manage.py startserver &&
                     python soup_system_settings/manage.py runserver 0.0.0.0:8000"
 
