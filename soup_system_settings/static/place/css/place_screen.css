@@ -74,7 +74,7 @@ body {
 .place-name { 
     color: #40A3F8;
     font-weight: 600;
-    font-size: calc(6vw + 10px);
+    font-size: calc(10vw + 10px);
 }
 
 .border { 
@@ -94,7 +94,7 @@ body {
 .patient-number h2 { 
     color: #40A3F8;
     font-weight: 700;
-    font-size: calc(10vw + 10px);
+    font-size: calc(20vw + 10px);
     margin-bottom: 2%;
 }
 

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static '_reset.css' %}">
     <link rel="stylesheet" href="{% static 'admin_lk/css/admin_lk.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'admin_lk/img/queue.png' %}">
     <title>Личный кабинет администратора</title>
 </head>
 <body>
@@ -29,7 +30,7 @@
             <nav class="nav">
                 <div class="title">
                     <p class="name-system">
-                        Администрирование системы<br>управления потоком пациентов
+                        Администрирование системы<br>управления потоками пациентов
                     </p>
                 </div>
                 <div class="content-header search">
@@ -54,16 +55,16 @@
             <div class="burger-menu-open none-active">
                 <ul class="burger-menu-list">
                     <li class="side-bar-item">
-                        <img src="{% static 'admin_lk/img/side-bar-logo.svg' %}" alt="" class="side-bar-logo">
+                        <img src="{% static 'admin_lk/img/person.png' %}" alt="" class="side-bar-logo">
                     </li>
                     <li class="side-bar-item">
                         <img src="{% static 'admin_lk/img/door.png' %}" alt="" class="side-bar-logo">
                     </li>
                     <li class="side-bar-item">
-                        <img src="{% static 'admin_lk/img/side-bar-logo.svg' %}" alt="" class="side-bar-logo">
+                        <img src="{% static 'admin_lk/img/person.png' %}" alt="" class="side-bar-logo">
                     </li>
                     <li class="side-bar-item">
-                        <img src="{% static 'admin_lk/img/side-bar-logo.svg' %}" alt="" class="side-bar-logo">
+                        <img src="{% static 'admin_lk/img/person.png' %}" alt="" class="side-bar-logo">
                     </li>
                 </ul>
             </div>
@@ -71,7 +72,7 @@
                 <div class="side-bar">
                     <ul class="side-bar-navigation">
                         <li class="side-bar-item" id = 'doctor-settings'>
-                            <img src="{% static 'admin_lk/img/side-bar-logo.svg' %}" alt="" class="side-bar-logo">
+                            <img src="{% static 'admin_lk/img/person.png' %}" alt="" class="side-bar-logo">
                             <a href="#!">Врачебный состав</a>
                         </li>
                         <li class="side-bar-item" id = 'place-settings'>
@@ -84,12 +85,12 @@
                     <div class="add-personal">
                         <div class = 'add-btn-click' id = 'add-btn-click'>
                         <p>Добавить работника</p>
-                        <img src="{% static 'admin_lk/img/green-plus.svg ' %}" alt="" class="img-add-personal icon-img">
+                        <img src="{% static 'admin_lk/img/plus.png' %}" alt="" class="img-add-personal icon-img">
                         </div>
                     </div>
                     <div class = 'title-personal'>
                         <h2 class="personal-title" id = 'main-screen-title'>
-                            Состав мед.работников, входящих в СУПП 
+                            Состав медработников, входящих в СУПП 
                         </h2>
                     </div>
                     <ul class="person-list" id = 'person-list'>    

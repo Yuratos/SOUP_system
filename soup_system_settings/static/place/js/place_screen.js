@@ -26,7 +26,7 @@ const placeSocket = new WebSocket(
 
 /* Заполнение шаблона */
 
-place_name_title.textContent = `--- ${placeName} ---`
+place_name_title.textContent = `${placeName}`
 
 
 /* Действия с веб-сокетом  */
