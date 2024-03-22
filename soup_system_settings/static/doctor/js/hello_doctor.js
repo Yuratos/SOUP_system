@@ -82,9 +82,9 @@ async function get_doctors(event) {
     
     sorry_text_second.classList.add('none-active')
 
-    console.log(doctors.doctors)
+    doctors_list =  doctors.doctors
 
-    for (doctor of doctors.doctors) { 
+    for (doctor of doctors_list.sort()) { 
         let btn = document.createElement('button')
         let li_item = document.createElement('li')
         let li_h3_item = document.createElement('h3')
@@ -130,7 +130,9 @@ async function get_places(event) {
 
     sorry_text_third.classList.add('none-active')
 
-    for (place of places.places) { 
+    place_list = places.places
+
+    for (place of place_list.sort()) { 
         let btn = document.createElement('button')
         let li_item = document.createElement('li')
         let li_h3_item = document.createElement('h3')
