@@ -44,5 +44,8 @@ class PlaceController(View):
 
 class PlaceScreen(View):
     def get(self, request, place_number):
+        all_free_places = main_places.find_one({'name': 'all_free_places'}).get('all')
+        if place_number not in all_free_places: 
+            raise Http404()
         context = {'place_number': place_number}
         return render(request, 'place/place_screen.html', context=context)
