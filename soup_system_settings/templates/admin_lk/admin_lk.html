@@ -11,7 +11,8 @@
     <title>Личный кабинет администратора</title>
 </head>
 <body>
-  
+    {{ additional_departaments|json_script:"additional_departaments" }}
+    {{ main_departaments|json_script:"main_departaments" }}
     <div class="remove-personal-form-block none-active" id = 'remove-block'>
         <div class="remove-personal-div">
             <button class="close-form remove" id = 'close-remove'>

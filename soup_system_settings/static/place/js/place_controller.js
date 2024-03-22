@@ -4,7 +4,8 @@ let two_step_finish_patient = 1
 
 let check_empty = null 
 
-const additional = ['КТ', 'Рентген', 'Ортопантамограф', 'УЗИ', 'Лаборатория']
+const additional = JSON.parse(document.getElementById('additional_departaments').textContent);
+console.log(additional)
 
 
 /* основные элементы */

@@ -4,23 +4,13 @@ from django_lock import lock
 from channels.generic.websocket import AsyncWebsocketConsumer
 from patient_queue.mongo_db import main_places, main_queue
 from patient_queue.patient import Patient
-from patient_queue.models import PatientModel, RemoteFromQueuePatientModel
+
 from .translate import translation_dict
 
 
 
 
 # Полезные функции
-
-def del_patient_from_queue(personal_id, surname, is_gold): 
-    try: 
-        print(personal_id, surname, is_gold)
-        PatientModel.objects.delete(personal_id = personal_id, surname = surname, is_gold = is_gold)
-        RemoteFromQueuePatientModel.objects.create(personal_id = personal_id, surname = surname, is_gold = is_gold)
-    
-    except Exception as error: 
-        print(error)
-
 
 def send_patient_to_queue(patient, next_doctor, main_queue): 
     
@@ -158,7 +148,6 @@ class PlaceConsumer(AsyncWebsocketConsumer):
                 
                 # Удаление пациента, если никаких врачей не передано и пациента не нужно возвращать
                 if len(patient_departaments) == len(next_doctors) == 0:
-                    del_patient_from_queue(patient.get('personal_id'), patient.get('surname'), patient.get('is_gold'))
                     next_doctor = 'Отсутствует'
                 
                 else:

@@ -2,9 +2,14 @@
 
 let to_delete = null 
 
-const departaments_options =  ['Педиатрия', 'Челюстно-лицевая хирургия',  'Хирургия', 'Травматология', 'Офтальмология', 'Нейрохирургия', 'ЛОР']
+const additional = JSON.parse(document.getElementById('additional_departaments').textContent);
 
-const additional = ['КТ', 'Рентген', 'Ортопантамограф', 'УЗИ', 'Лаборатория']
+const departaments_options = JSON.parse(document.getElementById('main_departaments').textContent);
+
+console.log(additional)
+
+console.log(departaments_options)
+
 
 /* Основные элементы */ 
 

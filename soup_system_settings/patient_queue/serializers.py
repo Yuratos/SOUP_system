@@ -1,18 +1,20 @@
 from rest_framework import serializers
-from .models import PatientModel
-from patient_queue.departaments_objects import ALL_DEPARTAMENTS_NAME, ADDITIONAL_DEPARTAMENTS_NAME
+from patient_queue.mongo_db import main_places
 
-class PatientSerializer(serializers.ModelSerializer):
+class PatientSerializer(serializers.Serializer):
+    personal_id  = serializers.CharField(max_length = 10)  
+    surname = serializers.CharField(max_length = 60)
+    is_gold = serializers.BooleanField()
+    departaments = serializers.ListField(allow_empty=False)
     
-    departaments = serializers.ListField(child = serializers.ChoiceField(ALL_DEPARTAMENTS_NAME + ADDITIONAL_DEPARTAMENTS_NAME), allow_empty=False) 
+    def validate(self, attrs):
+        additional_departaments = main_places.find_one({'name': 'additional_departaments'}).get('all')
+        main_departaments = main_places.find_one({'name': 'main_departaments'}).get('all')
+        all_departaments = main_departaments + additional_departaments
+        departaments = attrs.get('departaments')
+        for departament in departaments: 
+            if departament not in all_departaments: 
+                raise serializers.ValidationError({"departaments":"Одного из выбранных направлений не существует"})
+        return super().validate(attrs) 
      
-    class Meta: 
-        model = PatientModel
-        fields = '__all__' 
-        
-    def save(self, **kwargs):
-        validated_data = self.validated_data 
-        validated_data.pop('departaments', None)
-        return super().save(**kwargs)
-    
     

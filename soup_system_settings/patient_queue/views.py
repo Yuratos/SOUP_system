@@ -3,8 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from .serializers import PatientSerializer
 from .patient import Patient
-from .mongo_db import main_queue
-from .departaments_objects import ADDITIONAL_DEPARTAMENTS_NAME
+from .mongo_db import main_queue, main_places
 
 
 class RegisterPatientAPIView(APIView):
@@ -15,7 +14,6 @@ class RegisterPatientAPIView(APIView):
         patient = PatientSerializer(data=request.data)
         data = request.data
         if patient.is_valid():
-            patient.save()
             surname = data.get('surname') 
             personal_id = data.get('personal_id') 
             departaments = data.get('departaments') 
@@ -23,7 +21,8 @@ class RegisterPatientAPIView(APIView):
             patient_object = Patient.to_json(surname, personal_id, is_gold,  departaments)
             patient_departaments = patient_object.get('doctors')
             need_queue = patient_departaments[0]
-            if need_queue not in ADDITIONAL_DEPARTAMENTS_NAME: 
+            additional_departaments = main_places.find_one({'name': 'additional_departaments'}).get('all')
+            if need_queue not in additional_departaments: 
                 patient_object['return_to'] = need_queue
             patient_object['first_visit'] = True
             if (is_gold): 
@@ -39,7 +38,7 @@ class RegisterPatientAPIView(APIView):
                         )
                 return Response({'code': 200, 'status': 'ok'})
             
-            if need_queue not in ADDITIONAL_DEPARTAMENTS_NAME: 
+            if need_queue not in additional_departaments: 
                 main_queue.update_one(
                             {"name": need_queue},  
                             {"$push": {"newbies_queue": patient_object}})       
