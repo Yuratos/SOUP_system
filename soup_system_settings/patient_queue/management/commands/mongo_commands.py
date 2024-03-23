@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         try:
             free_places = {'name': 'free_places', 'free': []}
-            all_free_places = {'name': 'all_free_places', 'all':  FREE_PLACES}
+            all_free_places = {'name': 'all_free_places', 'all':  FREE_PLACES + ADDITIONAL_DEPARTAMENTS_NAME}
             main_departaments =  {'name': 'main_departaments', 'all':  ALL_DEPARTAMENTS_NAME}
             additional_departaments = {'name': 'additional_departaments', 'all':  ADDITIONAL_DEPARTAMENTS_NAME}
             departaments_weight = {'name': 'departaments_weight', 'all': DEPARTAMENTS_WEIGHT}

@@ -4,6 +4,7 @@ let main_doctor = null
 
 let main_place = null
 
+const additional = JSON.parse(document.getElementById('additional_departaments').textContent);
 
 
 /* основные элементы'*/
@@ -133,6 +134,11 @@ async function get_places(event) {
     place_list = places.places
 
     for (place of place_list.sort()) { 
+
+        if (additional.includes(place)) {
+            continue
+        }
+
         let btn = document.createElement('button')
         let li_item = document.createElement('li')
         let li_h3_item = document.createElement('h3')
@@ -161,7 +167,11 @@ function choose_doctors(event) {
 
     if (main_doctor_name_list.length <= 3) { 
 
-        hello_text_step_third.textContent = `Добрый день. Выбрано: ${main_doctor_name_list.join(' ')}`
+        main_place = main_doctor_name_list.join(' ')
+        let url = 'http://' + window.location.host + `/place/place-controller/${main_place}/${main_doctor}`
+        window.location.href = url
+        return 
+
 
     } else {
 

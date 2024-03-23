@@ -56,7 +56,7 @@ placeSocket.onmessage = function(event) {
     console.log(data.fio)
 
     if (data.fio == "Идут сопутствующие процедуры") { 
-        doctor_name.textContent = `${data.departament}`
+        doctor_name.textContent = ''
         not_active_title.classList.add('none-active') 
     }
 

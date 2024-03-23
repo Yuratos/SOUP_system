@@ -12,7 +12,9 @@ from patient_queue.mongo_db import main_places
 
 class HelloDoctorPage(View): 
     def get(self, request): 
-        return render(request, 'doctor/hello_doctor.html')
+        additional_departaments = main_places.find_one({'name': 'additional_departaments'}).get('all')
+        context = {'additional_departaments': additional_departaments}
+        return render(request, 'doctor/hello_doctor.html', context=context)
     
     
 class GetMainDepartaments(APIView):
