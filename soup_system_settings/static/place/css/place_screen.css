@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+
+html { 
+    height: 100vh;
+    width: 100vw;
+    padding-bottom: 5%;
+}
+
+
+body { 
+    background-color: #EEFAFF;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'Rubik';
+    display: flex;
+    flex-direction: column;
+}
+
+.container { 
+    max-width: 100%;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+
+.header { 
+    padding: 40px;
+    padding-bottom: 10px;
+}
+
+.nav { 
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: #40A3F8;
+    font-weight: 600;
+    font-size: calc(1vw + 10px);
+
+}
+
+.main-section { 
+    padding: 2%;
+    flex: 1; 
+}
+
+
+.flex-all { 
+    display: flex;
+    flex-direction: column;
+}
+
+.tablo { 
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    padding: 2% 4%;
+    display: flex; 
+    flex-direction: column;
+    text-align: center;
+    gap: 2%;
+}
+
+.tablo h4 { 
+    color: #40A3F8;
+    font-weight: 600;
+    font-size: calc(1.8vw + 10px);   
+}
+
+.place-name { 
+    color: #40A3F8;
+    font-weight: 600;
+    font-size: calc(10vw + 10px);
+}
+
+.border { 
+    height: 5px;
+    background-color: #40A3F8;;
+}
+
+.patient-number { 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    gap: 3%;
+}
+
+.patient-number h2 { 
+    color: #40A3F8;
+    font-weight: 700;
+    font-size: calc(20vw + 10px);
+    margin-bottom: 2%;
+}
+
+.patient-number p { 
+    opacity: 0.9;
+    color: #40A3F8;
+    font-weight: 400;
+    font-size: calc(10vw + 10px);
+    margin-bottom: 4%;
+}
+
+.next-patients-list { 
+    opacity: 0.9;
+    color: #40A3F8;
+    font-weight: 400;
+    font-size: calc(2vw + 10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50%
+}
+
+.none-active { 
+    display: none;
+}
+

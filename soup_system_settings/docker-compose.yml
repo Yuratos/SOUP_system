@@ -1,0 +1,67 @@
+version: '3.8'
+
+volumes:
+  django: 
+
+services:
+  django:
+    build: 
+      context: ../
+      dockerfile: soup_system_settings/dockerfile
+    volumes:
+      - django:/usr/src/soup_system_settings
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - app_network
+    environment:
+      - "MONGO_HOST=mongodb"
+      - "REDIS_HOST=redis"
+    command: sh -c "python soup_system_settings/manage.py makemigrations &&
+                    python soup_system_settings/manage.py migrate &&
+                    python soup_system_settings/manage.py db_commands &&
+                    python soup_system_settings/manage.py mongo_commands &&
+                    python soup_system_settings/manage.py startserver &&
+                    python soup_system_settings/manage.py runserver 0.0.0.0:8000"
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_container
+    ports:
+      - "27017:27017"
+    networks:
+      - app_network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo_express_container
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    networks:
+      - app_network
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://mongodb:27017
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=mongoadmin
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=secret
+      
+
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+

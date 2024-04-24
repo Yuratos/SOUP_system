@@ -1,0 +1,23 @@
+FROM python:3.11
+
+SHELL ["/bin/bash", "-c"]
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN pip install --upgrade pip
+
+
+# Create a user and directory
+WORKDIR /soup
+
+
+# Install the project dependencies
+
+COPY  . .
+RUN pip install --no-cache-dir -r requirements.txt
+#WORKDIR /soup/
+#EXPOSE 2323 5052  
+#RUN python /soup/soup_system_settings/manage.py mongo_commands
+#RUN python /soup/soup_system_settings/manage.py startserver

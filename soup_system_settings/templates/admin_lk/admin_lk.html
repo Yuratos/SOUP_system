@@ -1,0 +1,123 @@
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '_reset.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_lk/css/admin_lk.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'admin_lk/img/queue.png' %}">
+    <title>Личный кабинет администратора</title>
+</head>
+<body>
+  
+    <div class="remove-personal-form-block none-active" id = 'remove-block'>
+        <div class="remove-personal-div">
+            <button class="close-form remove" id = 'close-remove'>
+                <img src="{% static 'admin_lk/img/logout.svg' %}" alt="" class="close-form icon-img">
+            </button>
+            <h2 class="remove-pers-title" id = 'remove-text'>Вы уверены, что вы хотите удалить Игната Игнатьевича?</h2>
+            <div class="two-btn-accept">
+                <button class = 'remove-personal-btn agree' id = 'remove-btn-agree'>Да</button>
+                <button class = 'remove-personal-btn disagree' id = 'remove-btn-disagree'>Нет</button>
+            </div>
+        </div>
+    </div>
+
+    <heder class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="title">
+                    <p class="name-system">
+                        Администрирование системы<br>управления потоками пациентов
+                    </p>
+                </div>
+                <div class="content-header search">
+                    <img src="{% static 'admin_lk/img/search-black.svg' %}" alt="" class="icon-img">
+                    <input type="text" class = 'search-input' placeholder="Поиск по сотрудникам" id = 'search'>
+                </div>
+                <div class="info">
+                    <img src="{% static 'admin_lk/img/admin-photo.png' %}" alt="" class = 'admin-img'>
+                    <p class = 'name'>Викторов Андрей</p>
+                    <a href="" class="loguot"><img src="" alt="" class="logout-img">
+                    <img src="{% static 'admin_lk/img/logout.svg' %}" alt="" class="icon-img">
+                    </a>
+                </div>
+                <div class="burger-menu">
+                    <img src="{% static 'admin_lk/img/menu_burger.svg' %}" alt="" class="burger-menu-icon icon-img">
+                </div>
+            </nav>
+        </div>
+    </heder>
+    <section class="main-admin-page">
+        <div class="container">
+            <div class="burger-menu-open none-active">
+                <ul class="burger-menu-list">
+                    <li class="side-bar-item">
+                        <img src="{% static 'admin_lk/img/person.png' %}" alt="" class="side-bar-logo">
+                    </li>
+                    <li class="side-bar-item">
+                        <img src="{% static 'admin_lk/img/door.png' %}" alt="" class="side-bar-logo">
+                    </li>
+                    <li class="side-bar-item">
+                        <img src="{% static 'admin_lk/img/person.png' %}" alt="" class="side-bar-logo">
+                    </li>
+                    <li class="side-bar-item">
+                        <img src="{% static 'admin_lk/img/person.png' %}" alt="" class="side-bar-logo">
+                    </li>
+                </ul>
+            </div>
+            <div class="main-admin-content">
+                <div class="side-bar">
+                    <ul class="side-bar-navigation">
+                        <li class="side-bar-item" id = 'doctor-settings'>
+                            <img src="{% static 'admin_lk/img/person.png' %}" alt="" class="side-bar-logo">
+                            <a href="#!">Врачебный состав</a>
+                        </li>
+                        <li class="side-bar-item" id = 'place-settings'>
+                            <img src="{% static 'admin_lk/img/door.png' %}" alt="" class="side-bar-logo">
+                            <a href="#!">Кабинеты</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="admin-settings">
+                    <div class="add-personal">
+                        <div class = 'add-btn-click' id = 'add-btn-click'>
+                        <p>Добавить работника</p>
+                        <img src="{% static 'admin_lk/img/plus.png' %}" alt="" class="img-add-personal icon-img">
+                        </div>
+                    </div>
+                    <div class = 'title-personal'>
+                        <h2 class="personal-title" id = 'main-screen-title'>
+                            Состав медработников, входящих в СУПП 
+                        </h2>
+                    </div>
+                    <ul class="person-list" id = 'person-list'>    
+                    </ul>
+                    <div class="form-personal-div none-active" id = 'form-personal-div'>
+                        <button class="close-form add" id = "close-form add">
+                            <img src="{% static 'admin_lk/img/logout.svg' %}" alt="" class="close-form icon-img">
+                        </button>
+                        <h2 class="add-pers-title">Добавление нового работника</h2>
+                        <form  class = 'form-add-form' id = 'doctor-form'>
+                            <label for="surnamename">Фамилия</label>
+                            <input type="text" id='surname' class = 'input-text'>
+                            <label for="name">Имя</label>
+                            <input type="text" id='name' class = 'input-text'>
+                            <label for="last_name">Отчество</label>
+                            <input type="text" id='last_name' class = 'input-text'>
+                            <label for="depertamnet">Направление</label>
+                            <select id = 'depertamnet_choice' class="input-text">
+                            </select>
+                        </form>
+                        <button class="accept-new-personal-btn" type="" id = 'accept-new-personal-btn'>Добавить</button>
+                        <div class="border-form"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src = "{% static 'admin_lk/js/admin_lk.js' %}"></script>
+</body>
+</html>

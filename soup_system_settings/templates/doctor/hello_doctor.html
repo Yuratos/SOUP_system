@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '_reset.css' %}">
+    <link rel="stylesheet" href="{% static 'doctor/css/hello_doctor.css' %}">
+    <title>Страница доктора</title>
+    <title>Document</title>
+</head>
+<body>
+    <div class="first-step-container" id = 'first-step'>
+    <div class="main-container">
+        <div class="hello-doctor-content">
+            <img src="{% static 'doctor/img/symbol.svg' %}" alt="" class = 'img-icon'>
+            <h1 class = 'main-text-hello'>Добро пожаловать в Систему управления<br>потоком пациентов</h1>
+            <div class="two-btn">
+                <button class="start btn" id='start-btn'>Начать</button>
+                <button class="end btn">Инструкция</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="second-step-container none-active" id = 'second-step'>
+        <div class="content-two">
+            <div class="header-bar">
+                <img src="{% static 'doctor/img/symbol.svg' %}" alt="" class = 'img-icon'>
+            </div>
+            <div class="search-yrslf">
+                <div class="search-input">
+                    <img src="{% static 'doctor/img/search-black.svg' %}" alt="" class="icon-img">
+                    <input type="text" class = 'search-input' placeholder="Поиск по сотрудникам" id = 'inp-search-doctors'>
+                </div>
+                <ul class="doctor-list" id = 'doctor-list'>
+                </ul>
+                <h2 class = 'sorry-block none-active' id = 'sorry-block-second'>Извините, ничего не найдено</h2>
+            </div> 
+        </div>
+        <button>
+            <img src="{% static 'doctor/img/back-step.svg' %}" alt="" class = 'btn-back-step icon-img' id = 'btn-back-step-second'>
+        </button>
+    </div>
+
+    <div class="second-step-container none-active" id = 'third-step'>
+        <div class="content-two">
+            <div class="header-bar">
+                <img src="{% static 'doctor/img/symbol.svg' %}" alt="" class = 'img-icon'>
+                <h2 class="hello-text"></h2>
+                <p>Выберите кабинет</p>
+            </div>
+            <div class="search-yrslf">
+                <div class="search-input">
+                    <img src="{% static 'doctor/img/search-black.svg' %}" alt="" class="icon-img">
+                    <input type="text" class = 'search-input' placeholder="Поиск по кабинетам" id = 'inp-search-places'>
+                </div>
+                <ul class="doctor-list" id = 'places-list'>
+                 
+                </ul>
+                <h2 class = 'sorry-block none-active' id = 'sorry-block-third'>Извините, ничего не найдено</h2>
+            </div> 
+        </div>
+        <button>
+            <img src="{% static 'doctor/img/back-step.svg' %}" alt="" class = 'btn-back-step icon-img' id = 'btn-back-step-third'>
+        </button>
+    </div>
+    <script src = "{% static 'doctor/js/hello_doctor.js' %}"></script>
+</body>
+</html>
